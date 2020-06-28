@@ -107,7 +107,16 @@ export const userRouterMap = [
           noCache: true
         }
       },
-
+      {
+        path: 'edit',
+        component: () => import('@/views/forecast/edit'),
+        name: 'edit',
+        hidden: true,
+        meta: {
+          title: '预报修改',
+          noCache: true
+        }
+      },
       {
         path: 'forecastList',
         component: () => import('@/views/forecast/list'),

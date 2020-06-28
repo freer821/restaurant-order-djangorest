@@ -31,7 +31,14 @@ service.interceptors.response.use(
   response => {
     const res = response.data
 
-    if (res.status !== 200) {
+    if (res.status === 404) {
+      Message({
+        message: 'Not Found!',
+        type: 'error',
+        duration: 5 * 1000
+      })
+      return Promise.reject(res)
+    } else if (res.status !== 200) {
       // 非200的错误属于业务错误，留给具体页面处理
       return Promise.reject(res)
     } else {

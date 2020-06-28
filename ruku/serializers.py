@@ -6,13 +6,13 @@ from ruku.models import Forecast
 
 
 class UserForecastSerializer(serializers.ModelSerializer):
-    arrivedtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
+    arrivedtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True)
     createdtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
     extra = serializers.JSONField()
 
     class Meta:
         model = Forecast
-        exclude = ['id', 'owner', 'updatedtime']
+        exclude = ['owner', 'updatedtime']
         extra_kwargs = {
             'arrivedtime': {'read_only': True},
             'real_num': {'read_only': True},

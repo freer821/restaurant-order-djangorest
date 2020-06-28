@@ -15,3 +15,21 @@ export function listForecasts(params) {
     params
   })
 }
+
+export function getForecast(id) {
+  return request({
+    url: '/forecasts/' + id,
+    method: 'get'
+  })
+}
+
+export function editForecast(data) {
+  console.log(data)
+  const id = data.id
+  return request({
+    url: '/forecasts/' + id + '/',
+    method: 'put',
+    data
+  })
+}
+
