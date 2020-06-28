@@ -23,9 +23,13 @@ class UserForecastViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return self.queryset.filter(owner=self.request.user).order_by('-updatedtime')
 
-#    def list(self, request, *args, **kwargs):
-#        pagination.PageNumberPagination.page_size = self.request.query_params.get('limit', 20)
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        forecast = self.get_queryset().filter(logistic_code=data['logistic_code'], product_name=data['product_name']).first()
+        if forecast is not None:
+            return Response(getStandardResponse(300, '%s and %s already exits' % (data['logistic_code'], data['product_name'] )))
 
+        super(UserForecastViewSet, self).create(request, args, kwargs)
 
 
     def perform_create(self, serializer):

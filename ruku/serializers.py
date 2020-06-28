@@ -6,8 +6,8 @@ from ruku.models import Forecast
 
 
 class UserForecastSerializer(serializers.ModelSerializer):
-    arrivedtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True)
-    createdtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
+    arrivedtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
+    createdtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
     extra = serializers.JSONField()
 
     class Meta:
