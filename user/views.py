@@ -1,12 +1,12 @@
+import django_filters
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import update_last_login
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.generics import get_object_or_404
+from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.parsers import JSONParser
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from common.utils import getRandomNo
@@ -110,3 +110,19 @@ class ChangePasswordView(generics.UpdateAPIView):
             return Response(getStandardResponse(200, 'password changed'))
 
         return Response(getStandardResponse(500, serializer.errors))
+
+
+
+# ----------- Admin ---------------------
+class UserAdminViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserAdminSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAdminUser,)
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+
+    @action(detail=False)
+    def user_name_list(self, request):
+        all_users = User.objects.all().filter(is_staff=False)
+        serializer = UserAdminSerializer(all_users, many=True)
+        return Response(getStandardResponse(200, '', serializer.data))

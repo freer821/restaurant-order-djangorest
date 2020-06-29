@@ -14,3 +14,10 @@ export function updateUserInfo(data) {
     data
   })
 }
+
+export function getAllUserNames() {
+  return request({
+    url: 'admin/user/name',
+    method: 'get'
+  })
+}

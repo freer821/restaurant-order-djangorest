@@ -15,6 +15,18 @@
           <size-select class="right-menu-item" />
         </el-tooltip>
       </template>
+      <el-dropdown v-if="is_admin">
+        <span class="el-dropdown-link">
+          {{ current_handler }}<i class="el-icon-arrow-down el-icon--right" />
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>黄金糕</el-dropdown-item>
+          <el-dropdown-item>狮子头</el-dropdown-item>
+          <el-dropdown-item>螺蛳粉</el-dropdown-item>
+          <el-dropdown-item disabled>双皮奶</el-dropdown-item>
+          <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
 
       <el-dropdown class="avatar-container right-menu-item" trigger="click">
         <div class="avatar-wrapper">
@@ -22,12 +34,12 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>
+          <el-dropdown-item v-if="!is_admin">
             <router-link to="/profile/info">
               用户信息
             </router-link>
           </el-dropdown-item>
-          <el-dropdown-item>
+          <el-dropdown-item v-if="!is_admin">
             <router-link to="/profile/password">
               密码修改
             </router-link>
@@ -64,8 +76,15 @@ export default {
     ...mapGetters([
       'sidebar',
       'name',
-      'device'
+      'device',
+      'is_admin',
+      'current_handler'
     ])
+  },
+  created() {
+    if (this.is_admin) {
+      console.log(this.$store.getters.token)
+    }
   },
   methods: {
     toggleSideBar() {

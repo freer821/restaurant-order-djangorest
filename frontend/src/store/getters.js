@@ -11,6 +11,7 @@ const getters = {
   is_admin: state => state.user.is_admin,
   profile: state => state.user.profile,
   permission_routers: state => state.permission.routers,
-  addRouters: state => state.permission.addRouters
+  addRouters: state => state.permission.addRouters,
+  current_handler: state => state.admin.current_handler
 }
 export default getters

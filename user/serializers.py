@@ -71,3 +71,14 @@ class ChangePasswordSerializer(serializers.Serializer):
     """
     oldPassword = serializers.CharField(required=True)
     newPassword = serializers.CharField(required=True)
+
+
+class UserAdminSerializer(serializers.ModelSerializer):
+    profile = ProfileSerializer(required=True)
+
+    class Meta:
+        model = User
+        exclude = ['password']
+        extra_kwargs = {
+            'username': {'read_only': True}
+        }
