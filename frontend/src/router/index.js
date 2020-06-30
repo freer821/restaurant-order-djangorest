@@ -163,4 +163,36 @@ export const userRouterMap = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
-export const adminRouterMap = []
+export const adminRouterMap = [
+  {
+    path: '/admin/forecast',
+    component: Layout,
+    redirect: '/admin/forecast/list',
+    alwaysShow: true,
+    name: 'forecastAdminManage',
+    meta: {
+      title: '预报管理',
+      icon: 'chart'
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/forecast/admin_list'),
+        name: 'forecastAdminList',
+        meta: {
+          title: '预报列表',
+          noCache: true
+        }
+      },
+      {
+        path: 'handle',
+        component: () => import('@/views/forecast/admin_handle'),
+        name: 'forecastAdminHandle',
+        meta: {
+          title: '入库扫描',
+          noCache: true
+        }
+      }
+    ]
+  }
+]

@@ -15,5 +15,7 @@ urlpatterns = [
     path('activateuser', activateuser),
 
     path('user/profile', UserRetrieveUpdateView.as_view()),
-    path('user/changepassword', ChangePasswordView.as_view())
-] + router.urls
+    path('user/changepassword', ChangePasswordView.as_view()),
+
+    url(r'^admin/', include(router.urls))
+]

@@ -6,7 +6,6 @@
       <el-input v-model="listQuery.product_name" clearable class="filter-item" style="width: 160px;" placeholder="请输入商品名称" />
       <el-input v-model="listQuery.logistic_code" clearable class="filter-item" style="width: 160px;" placeholder="请输入快递单号" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
     </div>
 
     <!-- 查询结果 -->
@@ -54,12 +53,12 @@
 
       <el-table-column align="center" label="入库时间" prop="arrivedtime" />
 
-      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
+      <!--el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
           <el-button v-if="!scope.row.arrivedtime" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
-      </el-table-column>
+      </el-table-column-->
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
@@ -93,9 +92,10 @@
 </style>
 
 <script>
-import { listForecasts } from '@/api/forecast'
+import { listAdminForecasts } from '@/api/forecast'
 import BackToTop from '@/components/BackToTop'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import Pagination from '@/components/Pagination'
+import { mapGetters } from 'vuex' // Secondary package based on el-pagination
 
 export default {
   name: 'ForecastsList',
@@ -109,12 +109,23 @@ export default {
         page: 1,
         limit: 20,
         offset: 0,
+        owner: undefined,
         product_name: undefined,
         logistic_code: undefined
       },
       goodsDetail: '',
       detailDialogVisible: false,
       downloadLoading: false
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'current_user'
+    ])
+  },
+  watch: {
+    current_user: function(val) {
+      this.getList()
     }
   },
   created() {
@@ -124,8 +135,8 @@ export default {
     getList() {
       this.listLoading = true
       this.listQuery.offset = (this.listQuery.page - 1) * this.listQuery.limit
-      listForecasts(this.listQuery).then(response => {
-        console.log(response.data)
+      this.listQuery.owner = this.current_user === 'all' ? undefined : this.current_user
+      listAdminForecasts(this.listQuery).then(response => {
         this.list = response.data.results
         this.total = response.data.count
         this.listLoading = false

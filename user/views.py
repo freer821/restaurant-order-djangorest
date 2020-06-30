@@ -121,8 +121,5 @@ class UserAdminViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAdminUser,)
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
 
-    @action(detail=False)
-    def user_name_list(self, request):
-        all_users = User.objects.all().filter(is_staff=False)
-        serializer = UserAdminSerializer(all_users, many=True)
-        return Response(getStandardResponse(200, '', serializer.data))
+    def get_queryset(self):
+        return self.queryset.filter(is_superuser=False)

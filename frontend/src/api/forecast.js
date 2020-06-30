@@ -33,3 +33,19 @@ export function editForecast(data) {
   })
 }
 
+export function listAdminForecasts(params) {
+  return request({
+    url: '/admin/forecasts/',
+    method: 'get',
+    params
+  })
+}
+
+export function rukuForecast(data, current_user) {
+  return request({
+    url: '/admin/forecasts/ruku_handle/?current_user=' + current_user,
+    method: 'post',
+    data
+  })
+}
+

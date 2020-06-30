@@ -78,7 +78,7 @@ class UserAdminSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        exclude = ['password']
+        exclude = ['password', 'is_superuser', 'first_name', 'last_name', 'groups', 'email', 'user_permissions']
         extra_kwargs = {
             'username': {'read_only': True}
         }

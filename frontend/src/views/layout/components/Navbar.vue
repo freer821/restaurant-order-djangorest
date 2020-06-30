@@ -15,18 +15,15 @@
           <size-select class="right-menu-item" />
         </el-tooltip>
       </template>
-      <el-dropdown v-if="is_admin">
-        <span class="el-dropdown-link">
-          {{ current_handler }}<i class="el-icon-arrow-down el-icon--right" />
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>黄金糕</el-dropdown-item>
-          <el-dropdown-item>狮子头</el-dropdown-item>
-          <el-dropdown-item>螺蛳粉</el-dropdown-item>
-          <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-          <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+      <el-select v-model="selected_user" placeholder="请选择">
+        <el-option value="all" label="All" />
+        <el-option
+          v-for="user in all_users"
+          :key="user.id"
+          :label="user.profile.company_name"
+          :value="user.id"
+        />
+      </el-select>
 
       <el-dropdown class="avatar-container right-menu-item" trigger="click">
         <div class="avatar-wrapper">
@@ -69,22 +66,26 @@ export default {
   },
   data() {
     return {
-      avatar: require('@/assets/user.png')
+      avatar: require('@/assets/user.png'),
+      selected_user: ''
     }
   },
   computed: {
     ...mapGetters([
       'sidebar',
-      'name',
       'device',
       'is_admin',
-      'current_handler'
+      'current_user',
+      'all_users'
     ])
   },
-  created() {
-    if (this.is_admin) {
-      console.log(this.$store.getters.token)
+  watch: {
+    selected_user: function(val) {
+      this.$store.dispatch('changeCurrentUser', val)
     }
+  },
+  created() {
+    this.selected_user = this.current_user
   },
   methods: {
     toggleSideBar() {

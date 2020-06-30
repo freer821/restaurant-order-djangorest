@@ -15,9 +15,9 @@ export function updateUserInfo(data) {
   })
 }
 
-export function getAllUserNames() {
+export function getAllUsers() {
   return request({
-    url: 'admin/user/name',
+    url: 'admin/users/',
     method: 'get'
   })
 }

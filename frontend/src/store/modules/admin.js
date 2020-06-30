@@ -1,17 +1,33 @@
+import { getAllUsers } from '@/api/user'
+
 const admin = {
   state: {
-    current_handler: 'All'
+    current_user: 'all',
+    all_users: []
   },
 
   mutations: {
-    SET_CURRENT_HANDLER: (state, current_handler) => {
-      state.current_handler = current_handler
+    SET_CURRENT_HANDLER: (state, current_user) => {
+      state.current_user = current_user
+    },
+    SET_ALL_USERS: (state, all_users) => {
+      state.all_users = all_users
     }
   },
 
   actions: {
-    changeCurrentHandler({ commit }, new_hanlder) {
-      commit('SET_CURRENT_HANDLER', new_hanlder)
+    changeCurrentUser({ commit }, current_user) {
+      commit('SET_CURRENT_HANDLER', current_user)
+    },
+    getAllUsers({ commit }) {
+      return new Promise((resolve, reject) => {
+        getAllUsers().then(response => {
+          commit('SET_ALL_USERS', response.data.results)
+          resolve(response.data)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     }
   }
 }

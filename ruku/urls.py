@@ -6,6 +6,7 @@ from .views import *
 
 router = routers.SimpleRouter()
 router.register(r'forecasts', UserForecastViewSet)
+router.register(r'admin/forecasts', AdminForecastViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),

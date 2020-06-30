@@ -21,7 +21,9 @@ router.beforeEach(async(to, from, next) => {
         try {
           const { is_superuser } = await store.dispatch('GetUserInfo')
 
-          console.log('is_admin ' + is_superuser)
+          if (is_superuser) {
+            store.dispatch('getAllUsers')
+          }
 
           // generate accessible routes map based on roles
           const accessRoutes = await store.dispatch('GenerateRoutes', is_superuser)

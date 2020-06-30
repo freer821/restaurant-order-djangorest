@@ -12,6 +12,7 @@ const getters = {
   profile: state => state.user.profile,
   permission_routers: state => state.permission.routers,
   addRouters: state => state.permission.addRouters,
-  current_handler: state => state.admin.current_handler
+  current_user: state => state.admin.current_user,
+  all_users: state => state.admin.all_users
 }
 export default getters
