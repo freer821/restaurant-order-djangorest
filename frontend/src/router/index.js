@@ -194,5 +194,36 @@ export const adminRouterMap = [
         }
       }
     ]
+  },
+  {
+    path: '/admin/warehouse',
+    component: Layout,
+    redirect: '/admin/warehouse/list',
+    alwaysShow: true,
+    name: 'storeAdminManage',
+    meta: {
+      title: '库存管理',
+      icon: 'chart'
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/warehouse/admin_list'),
+        name: 'storeAdminList',
+        meta: {
+          title: '库存列表',
+          noCache: true
+        }
+      },
+      {
+        path: 'check',
+        component: () => import('@/views/warehouse/admin_check'),
+        name: 'storeAdminCheck',
+        meta: {
+          title: '检修',
+          noCache: true
+        }
+      }
+    ]
   }
 ]

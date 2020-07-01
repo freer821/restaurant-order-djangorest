@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'corsheaders',
 
     'user',
-    'ruku'
+    'ruku',
+    'warehouse'
 ]
 
 REST_FRAMEWORK = {

@@ -24,10 +24,8 @@ export function getForecast(id) {
 }
 
 export function editForecast(data) {
-  console.log(data)
-  const id = data.id
   return request({
-    url: '/forecasts/' + id + '/',
+    url: '/forecasts/' + data.id + '/',
     method: 'put',
     data
   })

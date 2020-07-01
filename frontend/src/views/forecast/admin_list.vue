@@ -9,7 +9,7 @@
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row :row-class-name="tableRowClassName">
 
       <el-table-column type="expand">
         <template slot-scope="props">
@@ -71,6 +71,9 @@
 </template>
 
 <style>
+  .el-table .warning-row {
+    background: oldlace;
+  }
   .table-expand {
     font-size: 0;
   }
@@ -132,6 +135,12 @@ export default {
     this.getList()
   },
   methods: {
+    tableRowClassName({ row, rowIndex }) {
+      if (row.real_num !== row.expected_num && row.real_num !== 0) {
+        return 'warning-row'
+      }
+      return ''
+    },
     getList() {
       this.listLoading = true
       this.listQuery.offset = (this.listQuery.page - 1) * this.listQuery.limit
