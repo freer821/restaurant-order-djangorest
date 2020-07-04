@@ -6,6 +6,7 @@ from .views import *
 
 router = routers.SimpleRouter()
 router.register(r'admin/warehouse', AdminWarehouseViewSet)
+router.register(r'admin/warehousedetail', AdminWarehouseDetailViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),

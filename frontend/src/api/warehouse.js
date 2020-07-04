@@ -15,3 +15,19 @@ export function updateAdminWarehouseList(data) {
     data
   })
 }
+
+export function pushMassivCheckedWares(data) {
+  return request({
+    url: '/admin/warehouse/massiv_check_handle/?current_user=2',
+    method: 'post',
+    data
+  })
+}
+
+export function pushDetailCheckedWares(data) {
+  return request({
+    url: '/admin/warehousedetail/',
+    method: 'post',
+    data
+  })
+}

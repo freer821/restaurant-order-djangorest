@@ -7,7 +7,7 @@
         <el-radio-button label="massiv"> 批量录入</el-radio-button>
         <el-radio-button label="single"> 详细录入</el-radio-button>
       </el-radio-group>
-      <el-form v-if="check_type==='massiv'" ref="ware_massiv_check" :rules="rules" :model="ware_massiv_check" label-width="150px">
+      <el-form v-if="check_type==='massiv'" ref="ware_massiv_check" :model="ware_massiv_check" label-width="150px">
         <el-form-item label="产品名称" prop="product_name">
           <el-input v-model="ware_massiv_check.product_name" />
         </el-form-item>
@@ -30,7 +30,7 @@
           <el-input v-model="ware_massiv_check.num" type="number" placeholder="0" />
         </el-form-item>
       </el-form>
-      <el-form v-else ref="ware_single_check" :rules="rules" :model="ware_single_check" label-width="150px">
+      <el-form v-else ref="ware_single_check" :model="ware_single_check" label-width="150px">
         <el-form-item label="产品名称" prop="product_name">
           <el-input v-model="ware_single_check.product_name" />
         </el-form-item>
@@ -47,7 +47,7 @@
           </el-select>
         </el-form-item>
         <el-form-item v-if="ware_single_check.status==='error1'" label="故障类型" prop="error_status">
-          <el-checkbox-group v-model="ware_single_check.error_status">
+          <el-checkbox-group v-model="ware_single_check.descrp.error_status">
             <el-checkbox label="hardware">硬件</el-checkbox>
             <el-checkbox label="software">软件</el-checkbox>
           </el-checkbox-group>
@@ -56,7 +56,7 @@
           label="数量"
           prop="num"
         >
-          <el-input v-model="ware_single_check.num" type="number" placeholder="0" disabled />
+          <el-input value="1" type="number" disabled />
         </el-form-item>
         <el-form-item
           label="SN Code"
@@ -68,7 +68,7 @@
           label="备注"
           prop="descrp"
         >
-          <el-input v-model="ware_single_check.descrp" type="textarea" :rows="2" />
+          <el-input v-model="ware_single_check.descrp.comment" type="textarea" :rows="2" />
         </el-form-item>
       </el-form>
     </el-card>
@@ -80,6 +80,8 @@
 </template>
 
 <script>
+import { pushMassivCheckedWares, pushDetailCheckedWares } from '@/api/warehouse'
+
 import { mapGetters } from 'vuex'
 export default {
   name: 'WarehouseCheck',
@@ -87,22 +89,18 @@ export default {
   data() {
     return {
       ware_massiv_check: {
-        logistic_code: '',
         product_name: '',
-        num: 0,
+        num: '',
         status: 'normal'
       },
       ware_single_check: {
-        logistic_code: '',
         product_name: '',
-        num: 1,
         status: 'normal',
         sn_code: '',
-        descrp: '',
-        error_status: []
-      },
-      rules: {
-        product_name: [{ required: true, message: '产品名称不能为空', trigger: 'blur' }]
+        descrp: {
+          comment: '',
+          error_status: []
+        }
       },
       check_type: 'massiv',
       options: [{
@@ -124,29 +122,43 @@ export default {
   },
   methods: {
     submitForm() {
-      this.$refs.ware_check.validate((valid) => {
-        if (valid && this.current_user !== 'all') {
+      if (this.current_user !== 'all') {
+        if (this.check_type === 'massiv') {
+          this.ware_massiv_check.current_user = this.current_user
+          pushMassivCheckedWares(this.ware_massiv_check).then(response => {
+            this.$message.success('录入成功！')
+            this.resetForm()
+          }).catch(err => {
+            this.$message.error(err.msg)
+          })
         } else {
-          this.$message.error('请检查输入，并查看当前操作用户是否正确！')
-          return false
+          this.ware_single_check.current_user = this.current_user
+          pushDetailCheckedWares(this.ware_single_check).then(response => {
+            this.$message.success('录入成功！')
+            this.resetForm()
+          }).catch(err => {
+            this.$message.error(JSON.stringify(err.msg))
+          })
         }
-      })
+      } else {
+        this.$message.error('请先选择操作客户！')
+        return false
+      }
     },
     resetForm() {
       this.ware_massiv_check = {
-        logistic_code: '',
         product_name: '',
-        num: 0,
+        num: '',
         status: 'normal'
       }
       this.ware_single_check = {
-        logistic_code: '',
         product_name: '',
-        num: 1,
         status: 'normal',
         sn_code: '',
-        descrp: '',
-        error_status: []
+        descrp: {
+          comment: '',
+          error_status: []
+        }
       }
     }
   }
