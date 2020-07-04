@@ -31,3 +31,27 @@ export function pushDetailCheckedWares(data) {
     data
   })
 }
+
+export function getDetailCheckedWares(params) {
+  return request({
+    url: '/admin/warehousedetail/',
+    method: 'get',
+    params
+  })
+}
+
+export function getDetailCheckedWare(id) {
+  return request({
+    url: '/admin/warehousedetail/' + id,
+    method: 'get'
+  })
+}
+
+export function editDetailCheckedWare(data) {
+  return request({
+    url: '/admin/warehousedetail/' + data.id + '/',
+    method: 'put',
+    data
+  })
+}
+

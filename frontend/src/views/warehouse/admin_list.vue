@@ -8,7 +8,7 @@
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit show-summary highlight-current-row>
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
@@ -16,7 +16,7 @@
       </el-table-column>
       <el-table-column align="center" min-width="100" label="商品名称" prop="product_name" />
 
-      <el-table-column align="center" label="待操作">
+      <el-table-column align="center" label="待操作" prop="unknown_num">
         <template slot-scope="{row}">
           <template v-if="row.edit">
             <el-input v-model="row.unknown_num" class="edit-input" size="small" />
@@ -25,7 +25,7 @@
           <span v-else>{{ row.unknown_num }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="良品">
+      <el-table-column align="center" label="良品" prop="normal_num">
         <template slot-scope="{row}">
           <template v-if="row.edit">
             <el-input v-model="row.normal_num" class="edit-input" size="small" />
@@ -36,7 +36,7 @@
       </el-table-column>
 
       <el-table-column align="center" label="废品">
-        <el-table-column align="center" label="划痕">
+        <el-table-column align="center" label="划痕" prop="error0_num">
           <template slot-scope="{row}">
             <template v-if="row.edit">
               <el-input v-model="row.error0_num" class="edit-input" size="small" />
@@ -46,7 +46,7 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="故障">
+        <el-table-column align="center" label="故障" prop="error1_num">
           <template slot-scope="{row}">
             <template v-if="row.edit">
               <el-input v-model="row.error1_num" class="edit-input" size="small" />
@@ -87,7 +87,7 @@
           >
             编辑
           </el-button>
-          <el-button type="primary" size="small" @click="handleUpdate(row)">详情</el-button>
+          <el-button type="primary" size="small" @click="handleDetail(row)">详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -97,7 +97,15 @@
     <el-tooltip placement="top" content="返回顶部">
       <back-to-top :visibility-height="100" />
     </el-tooltip>
-
+    <el-drawer
+      :title="ware_detail_list.title"
+      :visible.sync="ware_detail_list.show"
+      direction="rtl"
+      size="70%"
+      :before-close="handleClose"
+    >
+      <WarehouseDetailList />
+    </el-drawer>
   </div>
 </template>
 
@@ -124,10 +132,10 @@ import { getAdminWarehouseList, updateAdminWarehouseList } from '@/api/warehouse
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination'
 import { mapGetters } from 'vuex' // Secondary package based on el-pagination
-
+import WarehouseDetailList from './components/waredetail_list'
 export default {
   name: 'WarehouseList',
-  components: { BackToTop, Pagination },
+  components: { BackToTop, Pagination, WarehouseDetailList },
   data() {
     return {
       list: [],
@@ -142,7 +150,11 @@ export default {
       },
       goodsDetail: '',
       detailDialogVisible: false,
-      downloadLoading: false
+      downloadLoading: false,
+      ware_detail_list: {
+        title: '',
+        show: false
+      }
     }
   },
   computed: {
@@ -222,7 +234,17 @@ export default {
           type: 'error'
         })
       })
+    },
+    handleDetail(row) {
+      this.ware_detail_list.title = row.product_name
+      this.ware_detail_list.show = true
+    },
+    handleClose(done) {
+      this.ware_detail_list.title = ''
+      this.ware_detail_list.show = false
+      done()
     }
+
   }
 }
 </script>

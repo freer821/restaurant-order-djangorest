@@ -223,6 +223,16 @@ export const adminRouterMap = [
           title: '检修',
           noCache: true
         }
+      },
+      {
+        path: 'checkdetail',
+        component: () => import('@/views/warehouse/admin_check_detail'),
+        name: 'storeAdminCheckDetail',
+        hidden: true,
+        meta: {
+          title: '检修 - 详细录入',
+          noCache: true
+        }
       }
     ]
   }

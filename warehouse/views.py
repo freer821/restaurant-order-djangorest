@@ -66,7 +66,7 @@ class AdminWarehouseDetailViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAdminUser,]
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filterset_fields = ['product_name']
+    filterset_fields = ['product_name', 'sn_code']
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
