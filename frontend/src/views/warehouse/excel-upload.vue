@@ -81,7 +81,7 @@ export default {
             extra: {
               isLabeledByStore: this.submitData[i][4] === '是',
               orderID: this.submitData[i][5],
-              contacter: this.submitData[i][6],
+              contact: this.submitData[i][6],
               platform: this.submitData[i][7],
               sender: {
                 name: this.submitData[i][8],
@@ -125,7 +125,7 @@ export default {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
         const filterVal = ['logistic_code', 'product_name', 'expected_num', 'logistic_company', 'isLabeledByStore', 'orderID',
-          'contacter', 'platform', 'sender_name', 'sender_addr', 'sender_city', 'sender_country', 'sender_postcode', 'comment']
+          'contact', 'platform', 'sender_name', 'sender_addr', 'sender_city', 'sender_country', 'sender_postcode', 'comment']
         const forecasts = [{
           logistic_code: '',
           logistic_company: '',
@@ -133,7 +133,7 @@ export default {
           expected_num: '',
           isLabeledByStore: '',
           orderID: '',
-          contacter: '',
+          contact: '',
           platform: '',
           sender_name: '',
           sender_addr: '',

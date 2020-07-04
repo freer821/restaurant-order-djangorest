@@ -86,7 +86,7 @@ export const userRouterMap = [
     name: 'forecastManage',
     meta: {
       title: '预报管理',
-      icon: 'chart'
+      icon: 'guide'
     },
     children: [
       {
@@ -194,7 +194,7 @@ export const adminRouterMap = [
     name: 'forecastAdminManage',
     meta: {
       title: '预报管理',
-      icon: 'chart'
+      icon: 'guide'
     },
     children: [
       {

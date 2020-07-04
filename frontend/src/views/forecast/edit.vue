@@ -29,7 +29,7 @@
           <el-input v-model="forecast.extra.orderID" />
         </el-form-item>
         <el-form-item label="负责人">
-          <el-input v-model="forecast.extra.contacter" />
+          <el-input v-model="forecast.extra.contact" />
         </el-form-item>
         <el-form-item label="平台">
           <el-input v-model="forecast.extra.platform" />
@@ -78,7 +78,7 @@ export default {
           isLabeledByStore: false,
           orderID: '',
           comment: '',
-          contacter: '',
+          contact: '',
           platform: '',
           sender: {
             name: '',
