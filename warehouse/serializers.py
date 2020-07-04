@@ -5,7 +5,7 @@ from rest_framework import serializers
 from warehouse.models import *
 
 
-class AdminWarehouseSerializer(serializers.ModelSerializer):
+class WarehouseSerializer(serializers.ModelSerializer):
     arrivedtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
     createdtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
 
@@ -14,7 +14,7 @@ class AdminWarehouseSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class AdminWarehouseDetailSerializer(serializers.ModelSerializer):
+class WarehouseDetailSerializer(serializers.ModelSerializer):
     arrivedtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
     createdtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
     descrp = serializers.JSONField(required=True)
@@ -28,8 +28,8 @@ class AdminWarehouseDetailSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance: WarehouseDetail):
         instance.descrp = json.loads(instance.descrp)
-        return super(AdminWarehouseDetailSerializer, self).to_representation(instance)
+        return super(WarehouseDetailSerializer, self).to_representation(instance)
 
     def to_internal_value(self, data):
         data['descrp'] = json.dumps(data['descrp'])
-        return super(AdminWarehouseDetailSerializer, self).to_internal_value(data)
+        return super(WarehouseDetailSerializer, self).to_internal_value(data)

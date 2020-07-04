@@ -9,6 +9,11 @@
 
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+      <el-table-column align="center" label="ID" width="80">
+        <template slot-scope="{row}">
+          <span>{{ row.id }}</span>
+        </template>
+      </el-table-column>
       <el-table-column align="center" min-width="100" label="SN码" prop="sn_code" />
       <el-table-column align="center" min-width="100" label="状态" prop="status">
         <template slot-scope="{row}">
@@ -23,9 +28,9 @@
       </el-table-column>
       <el-table-column align="center" min-width="100" label="备注" prop="descrp.comment" />
 
-      <el-table-column align="center" label="操作时间" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <span>{{ row.updatedtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <el-button type="primary" size="small" @click="handleUpdate(row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -58,12 +63,12 @@
 </style>
 
 <script>
-import { getUserDetailCheckedWares } from '@/api/warehouse'
+import { getAdminDetailCheckedWares } from '@/api/warehouse'
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination'
 
 export default {
-  name: 'WarehouseDetailList',
+  name: 'AdminWarehouseDetailList',
   components: { BackToTop, Pagination },
   filters: {
     parseErrorStatus(status) {
@@ -110,7 +115,7 @@ export default {
     getList() {
       this.listLoading = true
       this.listQuery.offset = (this.listQuery.page - 1) * this.listQuery.limit
-      getUserDetailCheckedWares(this.listQuery).then(response => {
+      getAdminDetailCheckedWares(this.listQuery).then(response => {
         this.list = response.data.results
         this.total = response.data.count
         this.listLoading = false

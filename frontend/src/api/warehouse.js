@@ -32,7 +32,7 @@ export function pushDetailCheckedWares(data) {
   })
 }
 
-export function getDetailCheckedWares(params) {
+export function getAdminDetailCheckedWares(params) {
   return request({
     url: '/admin/warehousedetail/',
     method: 'get',
@@ -55,3 +55,18 @@ export function editDetailCheckedWare(data) {
   })
 }
 
+export function getUserWarehouseList(params) {
+  return request({
+    url: '/warehouse/',
+    method: 'get',
+    params
+  })
+}
+
+export function getUserDetailCheckedWares(params) {
+  return request({
+    url: '/warehousedetail/',
+    method: 'get',
+    params
+  })
+}

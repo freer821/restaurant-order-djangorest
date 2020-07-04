@@ -4,60 +4,38 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input v-model="listQuery.product_name" clearable class="filter-item" style="width: 160px;" placeholder="请输入商品名称" />
-      <el-input v-model="listQuery.logistic_code" clearable class="filter-item" style="width: 160px;" placeholder="请输入快递单号" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row :row-class-name="tableRowClassName">
-
-      <el-table-column type="expand">
-        <template slot-scope="props">
-          <el-form label-position="left" class="table-expand">
-            <el-form-item label="商品ID">
-              <span>{{ props.row.extra.orderID }}</span>
-            </el-form-item>
-            <el-form-item label="平台">
-              <span>{{ props.row.extra.platform }}</span>
-            </el-form-item>
-            <el-form-item label="发件人信息">
-              <span>{{ props.row.extra.sender }}</span>
-            </el-form-item>
-            <el-form-item label="备注">
-              <span>{{ props.row.extra.comment }}</span>
-            </el-form-item>
-            <el-form-item label="管理员备注">
-              <span>{{ props.row.admin_extra }}</span>
-            </el-form-item>
-          </el-form>
-        </template>
-      </el-table-column>
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      element-loading-text="正在查询中。。。"
+      border
+      fit
+      show-summary
+      highlight-current-row
+      @selection-change="handleSelectionChange"
+    >
+      <el-table-column
+        type="selection"
+        width="55"
+      />
 
       <el-table-column align="center" min-width="100" label="商品名称" prop="product_name" />
 
-      <el-table-column align="center" min-width="150" label="快递单号" prop="logistic_code" />
+      <el-table-column align="center" label="待操作" prop="unknown_num" />
+      <el-table-column align="center" label="良品" prop="normal_num" />
 
-      <el-table-column align="center" label="快递公司" prop="logistic_company" />
+      <el-table-column align="center" label="废品">
+        <el-table-column align="center" label="划痕" prop="error0_num" />
 
-      <el-table-column align="center" label="维修仓出标签" prop="status">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.extra.isLabeledByStore ? 'success' : 'error' ">{{ scope.row.extra.isLabeledByStore ? '是' : '否' }}</el-tag>
-        </template>
+        <el-table-column align="center" label="故障" prop="error1_num" />
       </el-table-column>
-
-      <el-table-column align="center" label="预报数量" prop="expected_num" />
-
-      <el-table-column align="center" label="入库数量" prop="real_num" />
-
-      <el-table-column align="center" label="预报时间" prop="createdtime" />
-
-      <el-table-column align="center" label="入库时间" prop="arrivedtime" />
-
-      <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button v-if="!scope.row.arrivedtime" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+      <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
+        <template slot-scope="{row}">
+          <el-button type="primary" size="small" @click="handleDetail(row)">详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -67,14 +45,19 @@
     <el-tooltip placement="top" content="返回顶部">
       <back-to-top :visibility-height="100" />
     </el-tooltip>
-
+    <el-drawer
+      :title="ware_detail_list.title"
+      :visible.sync="ware_detail_list.show"
+      direction="rtl"
+      size="70%"
+      :before-close="handleClose"
+    >
+      <WarehouseDetailList />
+    </el-drawer>
   </div>
 </template>
 
 <style>
-  .table-expand {
-    font-size: 0;
-  }
   .table-expand label {
     width: 100px;
     color: #99a9bf;
@@ -90,19 +73,16 @@
   .goods-detail-box img {
     width: 100%;
   }
-  .el-table .warning-row {
-    background: oldlace;
-  }
 </style>
 
 <script>
-import { listForecasts } from '@/api/forecast'
+import { getUserWarehouseList } from '@/api/warehouse'
 import BackToTop from '@/components/BackToTop'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-
+import Pagination from '@/components/Pagination'
+import WarehouseDetailList from './components/waredetail_list'
 export default {
-  name: 'ForecastsList',
-  components: { BackToTop, Pagination },
+  name: 'WarehouseList',
+  components: { BackToTop, Pagination, WarehouseDetailList },
   data() {
     return {
       list: [],
@@ -112,29 +92,30 @@ export default {
         page: 1,
         limit: 20,
         offset: 0,
-        product_name: undefined,
-        logistic_code: undefined
+        product_name: undefined
       },
-      goodsDetail: '',
-      detailDialogVisible: false,
-      downloadLoading: false
+      downloadLoading: false,
+      ware_detail_list: {
+        title: '',
+        show: false
+      },
+      multipleSelection: []
+    }
+  },
+  watch: {
+    current_user: function(val) {
+      this.getList()
     }
   },
   created() {
     this.getList()
   },
   methods: {
-    tableRowClassName({ row, rowIndex }) {
-      if (row.real_num !== row.expected_num && row.real_num !== 0) {
-        return 'warning-row'
-      }
-      return ''
-    },
     getList() {
       this.listLoading = true
       this.listQuery.offset = (this.listQuery.page - 1) * this.listQuery.limit
-      listForecasts(this.listQuery).then(response => {
-        console.log(response.data)
+      this.listQuery.owner = this.current_user === 'all' ? undefined : this.current_user
+      getUserWarehouseList(this.listQuery).then(response => {
         this.list = response.data.results
         this.total = response.data.count
         this.listLoading = false
@@ -148,19 +129,19 @@ export default {
       this.listQuery.page = 1
       this.getList()
     },
-    handleCreate() {
-      this.$router.push({ path: '/forecast/single-create' })
+    handleDetail(row) {
+      this.ware_detail_list.title = row.product_name
+      this.ware_detail_list.show = true
     },
-    handleUpdate(row) {
-      this.$router.push({ path: '/forecast/edit', query: { id: row.id }})
+    handleClose(done) {
+      this.ware_detail_list.title = ''
+      this.ware_detail_list.show = false
+      done()
     },
-    showDetail(detail) {
-      this.goodsDetail = detail
-      this.detailDialogVisible = true
-    },
-    handleDelete(row) {
-
+    handleSelectionChange(val) {
+      this.multipleSelection = val
     }
+
   }
 }
 </script>

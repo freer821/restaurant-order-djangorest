@@ -15,7 +15,8 @@
           <size-select class="right-menu-item" />
         </el-tooltip>
       </template>
-      <el-select v-model="selected_user" placeholder="请选择">
+
+      <el-select v-if="is_admin" v-model="selected_user" placeholder="请选择">
         <el-option value="all" label="All" />
         <el-option
           v-for="user in all_users"

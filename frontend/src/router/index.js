@@ -129,6 +129,28 @@ export const userRouterMap = [
     ]
   },
   {
+    path: '/warehouse',
+    component: Layout,
+    redirect: '/warehouse/list',
+    alwaysShow: true,
+    name: 'storeManage',
+    meta: {
+      title: '库存管理',
+      icon: 'chart'
+    },
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/warehouse/list'),
+        name: 'storeList',
+        meta: {
+          title: '库存列表',
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
     path: '/profile',
     component: Layout,
     redirect: '/profile/info',

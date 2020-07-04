@@ -104,7 +104,7 @@
       size="70%"
       :before-close="handleClose"
     >
-      <WarehouseDetailList />
+      <AdminWarehouseDetailList />
     </el-drawer>
   </div>
 </template>
@@ -132,10 +132,10 @@ import { getAdminWarehouseList, updateAdminWarehouseList } from '@/api/warehouse
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination'
 import { mapGetters } from 'vuex' // Secondary package based on el-pagination
-import WarehouseDetailList from './components/waredetail_list'
+import AdminWarehouseDetailList from './components/admin_waredetail_list'
 export default {
   name: 'WarehouseList',
-  components: { BackToTop, Pagination, WarehouseDetailList },
+  components: { BackToTop, Pagination, AdminWarehouseDetailList },
   data() {
     return {
       list: [],
