@@ -151,6 +151,47 @@ export const userRouterMap = [
     ]
   },
   {
+    path: '/chuku',
+    component: Layout,
+    redirect: '/chuku/list',
+    alwaysShow: true,
+    name: 'chukuManage',
+    meta: {
+      title: '出库管理',
+      icon: 'guide'
+    },
+    children: [
+      {
+        path: 'single-create',
+        component: () => import('@/views/chuku/create'),
+        name: 'singleCreate',
+        meta: {
+          title: '出库预报',
+          noCache: true
+        }
+      },
+      {
+        path: 'edit',
+        component: () => import('@/views/chuku/edit'),
+        name: 'edit',
+        hidden: true,
+        meta: {
+          title: '出库修改',
+          noCache: true
+        }
+      },
+      {
+        path: 'forecastList',
+        component: () => import('@/views/chuku/list'),
+        name: 'forecastList',
+        meta: {
+          title: '出库列表',
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
     path: '/profile',
     component: Layout,
     redirect: '/profile/info',

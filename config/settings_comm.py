@@ -38,7 +38,8 @@ INSTALLED_APPS = [
 
     'user',
     'ruku',
-    'warehouse'
+    'warehouse',
+    'chuku'
 ]
 
 REST_FRAMEWORK = {
