@@ -5,7 +5,7 @@ from rest_framework import routers
 from .views import *
 
 router = routers.SimpleRouter()
-router.register(r'ruku', UserChukuViewSet)
+router.register(r'chuku', UserChukuViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),

@@ -17,10 +17,10 @@ class UserChukuSerializer(serializers.ModelSerializer):
     fba_code = serializers.CharField(allow_blank=True, allow_null=True, required=False)  #
     logistic_company = serializers.CharField(allow_blank=True, allow_null=True, required=False)  #
 
-    num = serializers.IntegerField(allow_null=True, required=False)
     weight = serializers.FloatField(allow_null=True, required=False)
     sendtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
     reciever = serializers.JSONField(allow_null=True, required=False)
+    createdtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
 
     class Meta:
         model = Chuku

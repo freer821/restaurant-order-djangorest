@@ -188,8 +188,10 @@ export default {
       },
       rules: {
         product_name: [{ required: true, message: '产品名称不能为空', trigger: 'blur' }],
-        pack_content: [{ required: true, message: '内物类型不能为空', trigger: 'blur' }]
-
+        pack_content: [{ required: true, message: '内物类型不能为空', trigger: 'blur' }],
+        num: [
+          { required: true, message: '不能为空或非数字', trigger: 'blur' }
+        ]
       }
     }
   },

@@ -15,20 +15,37 @@
       <el-table-column type="expand">
         <template slot-scope="props">
           <el-form label-position="left" class="table-expand">
-            <el-form-item label="商品ID">
-              <span>{{ props.row.extra.orderID }}</span>
+
+            <el-form-item label="物品类型">
+              <span>{{ props.row.type }}</span>
             </el-form-item>
             <el-form-item label="平台">
-              <span>{{ props.row.extra.platform }}</span>
+              <span>{{ props.row.platform }}</span>
             </el-form-item>
-            <el-form-item label="发件人信息">
-              <span>{{ props.row.extra.sender }}</span>
+            <el-form-item label="负责人">
+              <span>{{ props.row.contact }}</span>
+            </el-form-item>
+            <el-form-item label="打包类型">
+              <span>{{ props.row.pack_type | parsePackType }}</span>
+            </el-form-item>
+            <el-form-item label="长 (cm)">
+              <span>{{ props.row.long }}</span>
+            </el-form-item>
+            <el-form-item label="宽 (cm)">
+              <span>{{ props.row.width }}</span>
+            </el-form-item>
+            <el-form-item label="高 (cm)">
+              <span>{{ props.row.height }}</span>
+            </el-form-item>
+            <el-form-item label="FBA">
+              <span>{{ props.row.fba_code }}</span>
+            </el-form-item>
+
+            <el-form-item label="收件人信息">
+              <span>{{ props.row.reciever }}</span>
             </el-form-item>
             <el-form-item label="备注">
-              <span>{{ props.row.extra.comment }}</span>
-            </el-form-item>
-            <el-form-item label="管理员备注">
-              <span>{{ props.row.admin_extra }}</span>
+              <span>{{ props.row.comment }}</span>
             </el-form-item>
           </el-form>
         </template>
@@ -36,23 +53,23 @@
 
       <el-table-column align="center" min-width="100" label="商品名称" prop="product_name" />
 
-      <el-table-column align="center" min-width="150" label="快递单号" prop="logistic_code" />
+      <el-table-column align="center" label="SN号" prop="sn_code" />
 
-      <el-table-column align="center" label="快递公司" prop="logistic_company" />
+      <el-table-column align="center" label="快递单号" prop="logistic_code" />
 
-      <el-table-column align="center" label="维修仓出标签" prop="status">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.extra.isLabeledByStore ? 'success' : 'error' ">{{ scope.row.extra.isLabeledByStore ? '是' : '否' }}</el-tag>
+      <el-table-column align="center" label="内物类型" prop="pack_content" />
+
+      <el-table-column align="center" label="数量" prop="num" />
+
+      <el-table-column align="center" label="出库时间" prop="sendtime" />
+
+      <el-table-column align="center" label="状态" prop="status">
+        <template slot-scope="{row}">
+          <span>{{ row.status | parseStatus }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="预报数量" prop="expected_num" />
-
-      <el-table-column align="center" label="入库数量" prop="real_num" />
-
-      <el-table-column align="center" label="预报时间" prop="createdtime" />
-
-      <el-table-column align="center" label="入库时间" prop="arrivedtime" />
+      <el-table-column align="center" label="创建时间" prop="createdtime" />
 
       <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -96,13 +113,30 @@
 </style>
 
 <script>
-import { listForecasts } from '@/api/forecast'
+import { listUserChuku } from '@/api/chuku'
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
   name: 'ForecastsList',
   components: { BackToTop, Pagination },
+  filters: {
+    parseStatus(status) {
+      const statusMap = {
+        created: '已创建',
+        error0: '划痕',
+        error1: '故障'
+      }
+      return statusMap[status]
+    },
+    parsePackType(type) {
+      const typeMap = {
+        pallet: '托盘',
+        carton: '纸箱'
+      }
+      return typeMap[type]
+    }
+  },
   data() {
     return {
       list: [],
@@ -133,7 +167,7 @@ export default {
     getList() {
       this.listLoading = true
       this.listQuery.offset = (this.listQuery.page - 1) * this.listQuery.limit
-      listForecasts(this.listQuery).then(response => {
+      listUserChuku(this.listQuery).then(response => {
         console.log(response.data)
         this.list = response.data.results
         this.total = response.data.count
@@ -149,10 +183,10 @@ export default {
       this.getList()
     },
     handleCreate() {
-      this.$router.push({ path: '/forecast/single-create' })
+      this.$router.push({ path: '/chuku/single-create' })
     },
     handleUpdate(row) {
-      this.$router.push({ path: '/forecast/edit', query: { id: row.id }})
+      this.$router.push({ path: '/chuku/edit', query: { id: row.id }})
     },
     showDetail(detail) {
       this.goodsDetail = detail
