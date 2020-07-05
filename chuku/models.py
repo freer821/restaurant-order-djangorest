@@ -21,7 +21,7 @@ class Chuku(models.Model):
     weight = models.FloatField(null=True, blank=True, default=None) # 毛重KG
     long = models.FloatField(null=True, blank=True, default=None)
     width = models.FloatField(null=True, blank=True, default=None)
-    heigh = models.FloatField(null=True, blank=True, default=None)
+    height = models.FloatField(null=True, blank=True, default=None)
     fba_code = models.CharField(max_length=50, default="")
 
     reciever = models.TextField(default="") # json
@@ -31,8 +31,12 @@ class Chuku(models.Model):
     updatedtime = models.DateTimeField(auto_now=True)
 
     def save(self, *args, **kwargs):
-        self.weight = round(self.weight, 2)
-        self.long = round(self.long, 2)
-        self.width = round(self.width, 2)
-        self.heigh = round(self.heigh, 2)
+        if self.weight:
+            self.weight = round(self.weight, 2)
+        if self.long:
+            self.long = round(self.long, 2)
+        if self.width:
+            self.width = round(self.width, 2)
+        if self.height:
+            self.height = round(self.heigh, 2)
         super(Chuku, self).save(*args, **kwargs)

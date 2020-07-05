@@ -18,6 +18,7 @@ from django.urls import path, include
 from user.urls import urlpatterns as api_user_urls
 from ruku.urls import urlpatterns as api_ruku_urls
 from warehouse.urls import urlpatterns as api_warehouse_urls
+from chuku.urls import urlpatterns as api_chuku_urls
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -36,7 +37,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    url(r'^', include(api_user_urls + api_ruku_urls + api_warehouse_urls)),
+    url(r'^', include(api_user_urls + api_ruku_urls + api_warehouse_urls + api_chuku_urls)),
     url(r'^api-auth/', include('rest_framework.urls')),
     url(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
