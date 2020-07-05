@@ -130,6 +130,15 @@
         <el-form-item label="FBA单号" prop="fba_code">
           <el-input v-model="chuku.fba_code" />
         </el-form-item>
+        <el-form-item
+          label="状态"
+        >
+          <el-select v-model="chuku.status" clearable placeholder="请选择">
+            <el-option label="创建" value="created" />
+            <el-option label="处理中" value="handled" />
+            <el-option label="完成" value="finished" />
+          </el-select>
+        </el-form-item>
 
         <el-form-item label="备注">
           <el-input v-model="chuku.comment" type="textarea" :rows="2" placeholder="请输入内容" />
@@ -165,6 +174,7 @@ export default {
         pack_type: '',
         pack_content: '',
         sn_code: '',
+        status: '',
         reciever: {
           name: '',
           company: '',
@@ -240,6 +250,7 @@ export default {
         pack_type: '',
         pack_content: '',
         sn_code: '',
+        status: '',
         reciever: {
           name: '',
           company: '',

@@ -180,10 +180,10 @@ export default {
       this.getList()
     },
     handleCreate() {
-      this.$router.push({ path: '/admin/chuku/create' })
+      this.$router.push({ path: '/chuku/single-create' })
     },
     handleUpdate(row) {
-      this.$router.push({ path: '/admin/chuku/edit', query: { id: row.id }})
+      this.$router.push({ path: '/chuku/edit', query: { id: row.id }})
     },
     showDetail(detail) {
       this.goodsDetail = detail

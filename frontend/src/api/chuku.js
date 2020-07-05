@@ -38,3 +38,20 @@ export function listAdminChuku(params) {
     params
   })
 }
+
+export function getAdminChuku(id) {
+  return request({
+    url: '/admin/chuku/' + id,
+    method: 'get'
+  })
+}
+
+export function updateAdminChuku(data) {
+  console.log(data)
+  return request({
+    url: '/admin/chuku/' + data.id + '/',
+    method: 'put',
+    data
+  })
+}
+

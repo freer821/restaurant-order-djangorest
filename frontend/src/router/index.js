@@ -321,7 +321,7 @@ export const adminRouterMap = [
       },
       {
         path: 'edit',
-        component: () => import('@/views/chuku/edit'),
+        component: () => import('@/views/chuku/admin-edit'),
         name: 'edit',
         hidden: true,
         meta: {

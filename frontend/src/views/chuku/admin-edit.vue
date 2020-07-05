@@ -130,6 +130,15 @@
         <el-form-item label="FBA单号" prop="fba_code">
           <el-input v-model="chuku.fba_code" />
         </el-form-item>
+        <el-form-item
+          label="状态"
+        >
+          <el-select v-model="chuku.status" clearable placeholder="请选择" prop="status">
+            <el-option label="创建" value="created" />
+            <el-option label="处理中" value="handled" />
+            <el-option label="完成" value="finished" />
+          </el-select>
+        </el-form-item>
 
         <el-form-item label="备注">
           <el-input v-model="chuku.comment" type="textarea" :rows="2" placeholder="请输入内容" />
@@ -148,9 +157,10 @@
 </template>
 
 <script>
-import { updateUserChuku, getUserChuku } from '@/api/chuku'
+import { getAdminChuku, updateAdminChuku } from '@/api/chuku'
+import { mapGetters } from 'vuex'
 export default {
-  name: 'ChukuEdit',
+  name: 'ChukuCreate',
 
   data() {
     return {
@@ -165,6 +175,7 @@ export default {
         pack_type: '',
         pack_content: '',
         sn_code: '',
+        status: '',
         reciever: {
           name: '',
           company: '',
@@ -186,18 +197,25 @@ export default {
         logistic_company: '',
         comment: ''
       },
+      origin_chuku: {},
       rules: {
         product_name: [{ required: true, message: '产品名称不能为空', trigger: 'blur' }],
         pack_content: [{ required: true, message: '内物类型不能为空', trigger: 'blur' }],
         num: [
           { required: true, message: '不能为空或非数字', trigger: 'blur' }
-        ]
-      },
-      origin_chuku: {}
+        ],
+        status: [{ required: true, message: '状态不能为空', trigger: 'blur' }]
+
+      }
     }
   },
+  computed: {
+    ...mapGetters([
+      'current_user'
+    ])
+  },
   created() {
-    getUserChuku(this.$route.query.id).then(respone => {
+    getAdminChuku(this.$route.query.id).then(respone => {
       this.chuku = respone.data
       this.origin_chuku = Object.assign({}, this.chuku)
     }).catch(err => {
@@ -205,6 +223,7 @@ export default {
       this.$message.error('加载失败')
     })
   },
+
   methods: {
     hideAll() {
       for (let i = 0; i < this.showStatus.length; i++) {
@@ -227,15 +246,16 @@ export default {
     },
     submitForm() {
       this.$refs.chuku.validate((valid) => {
-        if (valid) {
-          updateUserChuku(this.chuku).then(response => {
-            this.$message.success('修改成功！')
-            this.$router.push({ path: '/chuku/list' })
+        if (valid && this.current_user !== 'all') {
+          this.chuku.current_user = this.current_user
+          updateAdminChuku(this.chuku).then(response => {
+            this.$message.success('更新成功！')
+            this.$router.push({ path: '/admin/chuku/list' })
           }).catch(err => {
             this.$message.error(JSON.stringify(err.msg))
           })
         } else {
-          this.$message.error('输入有误，请检查！')
+          this.$message.error('输入有误，请检查录入数据以及选择用户名！')
           return false
         }
       })

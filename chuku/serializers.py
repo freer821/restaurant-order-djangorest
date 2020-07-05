@@ -51,6 +51,7 @@ class AdminChukuSerializer(serializers.ModelSerializer):
     logistic_code = serializers.CharField(allow_blank=True, allow_null=True, required=False)  #
     fba_code = serializers.CharField(allow_blank=True, allow_null=True, required=False)  #
     logistic_company = serializers.CharField(allow_blank=True, allow_null=True, required=False)  #
+    comment = serializers.CharField(allow_blank=True, allow_null=True, required=False)  #
 
     weight = serializers.FloatField(allow_null=True, required=False)
     sendtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
@@ -63,8 +64,8 @@ class AdminChukuSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance: Chuku):
         instance.reciever = json.loads(instance.reciever)
-        return super(UserChukuSerializer, self).to_representation(instance)
+        return super(AdminChukuSerializer, self).to_representation(instance)
 
     def to_internal_value(self, data):
         data['reciever'] = json.dumps(data['reciever'])
-        return super(UserChukuSerializer, self).to_internal_value(data)
+        return super(AdminChukuSerializer, self).to_internal_value(data)

@@ -89,8 +89,8 @@ export default {
   },
   created() {
     getDetailCheckedWare(this.$route.query.id).then(respone => {
-      this.origin_ware_single_check = respone.data
-      this.ware_single_check = this.origin_ware_single_check
+      this.ware_single_check = respone.data
+      this.origin_ware_single_check = Object.assign({}, this.ware_single_check)
     }).catch(err => {
       console.log(err)
       this.$message.error('加载失败')

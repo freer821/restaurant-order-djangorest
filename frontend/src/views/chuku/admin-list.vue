@@ -131,8 +131,8 @@ export default {
     parseStatus(status) {
       const statusMap = {
         created: '已创建',
-        error0: '划痕',
-        error1: '故障'
+        handled: '处理中',
+        finished: '完成'
       }
       return statusMap[status]
     },
@@ -199,10 +199,10 @@ export default {
       this.getList()
     },
     handleCreate() {
-      this.$router.push({ path: '/chuku/single-create' })
+      this.$router.push({ path: '/admin/chuku/create' })
     },
     handleUpdate(row) {
-      this.$router.push({ path: '/chuku/edit', query: { id: row.id }})
+      this.$router.push({ path: '/admin/chuku/edit', query: { id: row.id }})
     },
     showDetail(detail) {
       this.goodsDetail = detail

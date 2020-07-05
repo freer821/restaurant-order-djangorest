@@ -101,8 +101,8 @@ export default {
   },
   created() {
     getForecast(this.$route.query.id).then(respone => {
-      this.origin_forecast = respone.data
-      this.forecast = this.origin_forecast
+      this.forecast = respone.data
+      this.origin_forecast = Object.assign({}, this.forecast)
     }).catch(err => {
       console.log(err)
       this.$message.error('加载失败')
