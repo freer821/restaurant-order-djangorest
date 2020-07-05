@@ -48,18 +48,14 @@ class AdminChukuViewSet(viewsets.ModelViewSet):
     filterset_fields = ['product_name', 'owner', 'logistic_code']
 
     def create(self, request, *args, **kwargs):
-        current_user = int(request.data.get('current_user'))
+        current_user = int(request.data.get('owner'))
         warehouse = Warehouse.objects.filter(owner_id=current_user, product_name=request.data.get('product_name')).first()
         if warehouse is None:
             return Response(getStandardResponse(400, '产品未找到，请检查录入商品名和用户名是否正确'))
         return super(AdminChukuViewSet, self).create(request, args, kwargs)
 
-    def perform_create(self, serializer):
-        current_user = int(self.request.data.get('current_user'))
-        serializer.save(owner_id=current_user, status='handled')
-
     def update(self, request, *args, **kwargs):
-        current_user = int(request.data.get('current_user'))
+        current_user = int(request.data.get('owner'))
         warehouse = Warehouse.objects.filter(owner_id=current_user, product_name=request.data.get('product_name')).first()
         if warehouse is None:
             return Response(getStandardResponse(400, '产品未找到，请检查录入商品名和用户名是否正确'))

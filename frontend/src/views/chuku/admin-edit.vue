@@ -247,7 +247,7 @@ export default {
     submitForm() {
       this.$refs.chuku.validate((valid) => {
         if (valid && this.current_user !== 'all') {
-          this.chuku.current_user = this.current_user
+          this.chuku.owner = this.current_user
           updateAdminChuku(this.chuku).then(response => {
             this.$message.success('更新成功！')
             this.$router.push({ path: '/admin/chuku/list' })

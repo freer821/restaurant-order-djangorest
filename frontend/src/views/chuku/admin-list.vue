@@ -119,7 +119,7 @@
 </style>
 
 <script>
-import { listAdminChuku } from '@/api/chuku'
+import { listAdminChuku, delAdminChuku } from '@/api/chuku'
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import { mapGetters } from 'vuex' // Secondary package based on el-pagination
@@ -156,8 +156,6 @@ export default {
         product_name: undefined,
         logistic_code: undefined
       },
-      goodsDetail: '',
-      detailDialogVisible: false,
       downloadLoading: false
     }
   },
@@ -204,12 +202,23 @@ export default {
     handleUpdate(row) {
       this.$router.push({ path: '/admin/chuku/edit', query: { id: row.id }})
     },
-    showDetail(detail) {
-      this.goodsDetail = detail
-      this.detailDialogVisible = true
-    },
     handleDelete(row) {
-
+      this.$confirm('此操作将永久删除该选项, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        delAdminChuku(row.id).then(response => {
+          this.$message.success('删除成功！')
+        }).catch(err => {
+          this.$message.error('删除失败！' + JSON.stringify(err.msg))
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }

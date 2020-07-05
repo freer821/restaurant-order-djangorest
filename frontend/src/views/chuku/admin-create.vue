@@ -157,7 +157,8 @@
 </template>
 
 <script>
-import { createUserChuku } from '@/api/chuku'
+import { createAdminChuku } from '@/api/chuku'
+import { mapGetters } from 'vuex'
 export default {
   name: 'ChukuCreate',
 
@@ -205,6 +206,12 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters([
+      'current_user'
+    ])
+  },
+
   methods: {
     hideAll() {
       for (let i = 0; i < this.showStatus.length; i++) {
@@ -227,10 +234,11 @@ export default {
     },
     submitForm() {
       this.$refs.chuku.validate((valid) => {
-        if (valid) {
-          createUserChuku(this.chuku).then(response => {
+        if (valid && this.current_user !== 'all') {
+          this.chuku.owner = this.current_user
+          createAdminChuku(this.chuku).then(response => {
             this.$message.success('创建成功！')
-            this.$router.push({ path: '/chuku/list' })
+            this.$router.push({ path: '/admin/chuku/list' })
           }).catch(err => {
             this.$message.error(JSON.stringify(err.msg))
           })

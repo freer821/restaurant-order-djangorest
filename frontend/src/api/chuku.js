@@ -39,6 +39,14 @@ export function listAdminChuku(params) {
   })
 }
 
+export function createAdminChuku(data) {
+  return request({
+    url: '/admin/chuku/',
+    method: 'post',
+    data
+  })
+}
+
 export function getAdminChuku(id) {
   return request({
     url: '/admin/chuku/' + id,
@@ -52,6 +60,13 @@ export function updateAdminChuku(data) {
     url: '/admin/chuku/' + data.id + '/',
     method: 'put',
     data
+  })
+}
+
+export function delAdminChuku(id) {
+  return request({
+    url: '/admin/chuku/' + id + '/',
+    method: 'DELETE'
   })
 }
 
