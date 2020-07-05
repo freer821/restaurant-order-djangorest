@@ -46,7 +46,7 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item v-if="ware_single_check.status==='error1'" label="故障类型" prop="error_status">
+        <el-form-item v-show="ware_single_check.status==='error1'" label="故障类型" prop="error_status">
           <el-checkbox-group v-model="ware_single_check.descrp.error_status">
             <el-checkbox label="hardware">硬件</el-checkbox>
             <el-checkbox label="software">软件</el-checkbox>

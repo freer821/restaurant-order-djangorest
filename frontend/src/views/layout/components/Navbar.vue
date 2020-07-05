@@ -5,7 +5,7 @@
     <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
+      <template v-show="device!=='mobile'">
 
         <el-tooltip content="全屏" effect="dark" placement="bottom">
           <screenfull class="right-menu-item" />
@@ -16,7 +16,7 @@
         </el-tooltip>
       </template>
 
-      <el-select v-if="is_admin" v-model="selected_user" placeholder="请选择">
+      <el-select v-show="is_admin" v-model="selected_user" placeholder="请选择">
         <el-option value="all" label="All" />
         <el-option
           v-for="user in all_users"
@@ -32,12 +32,12 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-if="!is_admin">
+          <el-dropdown-item v-show="!is_admin">
             <router-link to="/profile/info">
               用户信息
             </router-link>
           </el-dropdown-item>
-          <el-dropdown-item v-if="!is_admin">
+          <el-dropdown-item v-show="!is_admin">
             <router-link to="/profile/password">
               密码修改
             </router-link>

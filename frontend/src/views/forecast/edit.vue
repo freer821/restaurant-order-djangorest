@@ -54,7 +54,7 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <div v-if="!forecast.arrivedtime" class="op-container">
+    <div v-show="!forecast.arrivedtime" class="op-container">
       <el-button @click="resetForm">恢复</el-button>
       <el-button type="primary" @click="submitForm">修改</el-button>
     </div>

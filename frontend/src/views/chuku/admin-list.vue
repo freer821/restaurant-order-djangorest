@@ -51,6 +51,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="ID" width="80">
+        <template slot-scope="{row}">
+          <span>{{ row.id }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" min-width="100" label="商品名称" prop="product_name" />
 
       <el-table-column align="center" label="SN号" prop="sn_code" />
@@ -74,7 +80,7 @@
       <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button v-if="!scope.row.arrivedtime" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -170,9 +176,6 @@ export default {
   },
   methods: {
     tableRowClassName({ row, rowIndex }) {
-      if (row.real_num !== row.expected_num && row.real_num !== 0) {
-        return 'warning-row'
-      }
       return ''
     },
     getList() {

@@ -60,7 +60,7 @@
       <el-table-column align="center" label="操作" width="300" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
           <el-button
-            v-if="row.edit"
+            v-show="row.edit"
             class="cancel-btn"
             size="small"
             icon="el-icon-refresh"
