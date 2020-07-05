@@ -181,9 +181,9 @@ export const userRouterMap = [
         }
       },
       {
-        path: 'forecastList',
+        path: 'list',
         component: () => import('@/views/chuku/list'),
-        name: 'forecastList',
+        name: 'list',
         meta: {
           title: '出库列表',
           noCache: true
@@ -294,6 +294,47 @@ export const adminRouterMap = [
         hidden: true,
         meta: {
           title: '检修 - 详细录入',
+          noCache: true
+        }
+      }
+    ]
+  },
+  {
+    path: '/admin/chuku',
+    component: Layout,
+    redirect: '/admin/chuku/list',
+    alwaysShow: true,
+    name: 'chukuManage',
+    meta: {
+      title: '出库管理',
+      icon: 'guide'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/chuku/create'),
+        name: 'create',
+        meta: {
+          title: '出库预报',
+          noCache: true
+        }
+      },
+      {
+        path: 'edit',
+        component: () => import('@/views/chuku/edit'),
+        name: 'edit',
+        hidden: true,
+        meta: {
+          title: '出库修改',
+          noCache: true
+        }
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/chuku/list'),
+        name: 'list',
+        meta: {
+          title: '出库列表',
           noCache: true
         }
       }

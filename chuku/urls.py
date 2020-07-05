@@ -6,6 +6,7 @@ from .views import *
 
 router = routers.SimpleRouter()
 router.register(r'chuku', UserChukuViewSet)
+router.register(r'admin/chuku', AdminChukuViewSet)
 
 urlpatterns = [
     url(r'^', include(router.urls)),

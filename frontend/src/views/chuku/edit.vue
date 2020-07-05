@@ -231,6 +231,7 @@ export default {
         if (valid) {
           updateUserChuku(this.chuku).then(response => {
             this.$message.success('修改成功！')
+            this.$router.push({ path: '/chuku/list' })
           }).catch(err => {
             this.$message.error(JSON.stringify(err.msg))
           })

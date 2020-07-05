@@ -220,6 +220,7 @@ export default {
         if (valid) {
           createUserChuku(this.chuku).then(response => {
             this.$message.success('创建成功！')
+            this.$router.push({ path: '/chuku/list' })
           }).catch(err => {
             this.$message.error(JSON.stringify(err.msg))
           })

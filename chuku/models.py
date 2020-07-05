@@ -7,7 +7,7 @@ class Chuku(models.Model):
     owner = models.ForeignKey(User, related_name='chuku', on_delete=models.CASCADE)
     product_name = models.CharField(max_length=200, default="")
     sn_code = models.CharField(max_length=200, default="")
-    status = models.CharField(max_length=50, default="") # 0: normal, 1: error like expected_num != real_num
+    status = models.CharField(max_length=50, default="") # 0: created, 1: handled, 2: finished
     type = models.CharField(max_length=50, default="") # 物品类型
     platform = models.CharField(max_length=50, default="")  # 平台
     contact = models.CharField(max_length=50, default="")  # 负责人
@@ -38,5 +38,5 @@ class Chuku(models.Model):
         if self.width:
             self.width = round(self.width, 2)
         if self.height:
-            self.height = round(self.heigh, 2)
+            self.height = round(self.height, 2)
         super(Chuku, self).save(*args, **kwargs)

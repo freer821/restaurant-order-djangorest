@@ -25,8 +25,16 @@ export function getUserChuku(id) {
 
 export function updateUserChuku(data) {
   return request({
-    url: '/chuku/',
+    url: '/chuku/' + data.id + '/',
     method: 'put',
     data
+  })
+}
+
+export function listAdminChuku(params) {
+  return request({
+    url: '/admin/chuku/',
+    method: 'get',
+    params
   })
 }

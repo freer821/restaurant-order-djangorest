@@ -30,3 +30,23 @@ class UserChukuViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user, status='created')
+
+
+class AdminChukuViewSet(viewsets.ModelViewSet):
+    queryset = Chuku.objects.all()
+    serializer_class = UserChukuSerializer
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ['product_name', 'owner', 'logistic_code']
+
+    def create(self, request, *args, **kwargs):
+        current_user = int(request.data.get('current_user'))
+        warehouse = Warehouse.objects.filter(owner_id=current_user, product_name=request.data.get('product_name')).first()
+        if warehouse is None:
+            return Response(getStandardResponse(400, '产品未找到，请检查录入商品名和用户名是否正确'))
+        return super(AdminChukuViewSet, self).create(request, args, kwargs)
+
+    def perform_create(self, serializer):
+        current_user = int(self.request.data.get('current_user'))
+        serializer.save(owner_id=current_user, status='handled')
