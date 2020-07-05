@@ -4,9 +4,7 @@
     <!-- 查询和其他操作 -->
     <div class="filter-container">
       <el-input v-model="listQuery.username" clearable class="filter-item" style="width: 200px;" placeholder="请输入用户名" />
-      <el-input v-model="listQuery.mobile" clearable class="filter-item" style="width: 200px;" placeholder="请输入手机号" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
     </div>
 
     <!-- 查询结果 -->
@@ -15,27 +13,19 @@
 
       <el-table-column align="center" label="用户名" prop="username" />
 
-      <el-table-column align="center" label="手机号码" prop="mobile" />
-
-      <el-table-column align="center" label="性别" prop="gender">
+      <el-table-column align="center" label="状态" prop="is_active">
         <template slot-scope="scope">
-          <el-tag>{{ genderDic[scope.row.gender] }}</el-tag>
+          <el-tag>{{ scope.row.is_active | parseStatus }}</el-tag>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="生日" prop="birthday" />
+      <el-table-column align="center" label="加入时间" prop="date_joined" />
 
-      <el-table-column align="center" label="用户等级" prop="userLevel">
-        <template slot-scope="scope">
-          <el-tag>{{ levelDic[scope.row.userLevel] }}</el-tag>
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="最后登录" prop="last_login" />
 
-      <el-table-column align="center" label="状态" prop="status">
-        <template slot-scope="scope">
-          <el-tag>{{ statusDic[scope.row.status] }}</el-tag>
-        </template>
-      </el-table-column>
+      <el-table-column align="center" label="公司" prop="profile.company_name" />
+      <el-table-column align="center" label="电话" prop="profile.company_tel" />
+      <el-table-column align="center" label="地址" prop="profile.company_addr" />
 
     </el-table>
 
@@ -51,6 +41,22 @@ import Pagination from '@/components/Pagination' // Secondary package based on e
 export default {
   name: 'User',
   components: { Pagination },
+  filters: {
+    parseStatus(status) {
+      if (status) {
+        return '已激活'
+      }
+      return '未激活'
+    },
+    parsePackType(type) {
+      const typeMap = {
+        pallet: '托盘',
+        carton: '纸箱'
+      }
+      return typeMap[type]
+    }
+  },
+
   data() {
     return {
       list: null,
@@ -59,6 +65,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
+        offset: 0,
         username: undefined
       },
       downloadLoading: false,
@@ -73,9 +80,10 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
+      this.listQuery.offset = (this.listQuery.page - 1) * this.listQuery.limit
       fetchUserListAdmin(this.listQuery).then(response => {
-        this.list = response.data.data.list
-        this.total = response.data.data.total
+        this.list = response.data.results
+        this.total = response.data.count
         this.listLoading = false
       }).catch(() => {
         this.list = []
@@ -86,15 +94,6 @@ export default {
     handleFilter() {
       this.listQuery.page = 1
       this.getList()
-    },
-    handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['用户名', '手机号码', '性别', '生日', '状态']
-        const filterVal = ['username', 'mobile', 'gender', 'birthday', 'status']
-        excel.export_json_to_excel2(tHeader, this.list, filterVal, '用户信息')
-        this.downloadLoading = false
-      })
     }
   }
 }

@@ -21,3 +21,11 @@ export function getAllUsers() {
     method: 'get'
   })
 }
+
+export function fetchUserListAdmin(params) {
+  return request({
+    url: 'admin/users/',
+    method: 'get',
+    params
+  })
+}

@@ -3,3 +3,4 @@
 **/migrations/**
 frontend/dist
 frontend/node_modules
+config/whsys.db

@@ -339,5 +339,37 @@ export const adminRouterMap = [
         }
       }
     ]
+  },
+  {
+    path: '/admin/user',
+    component: Layout,
+    redirect: '/admin/user/list',
+    alwaysShow: true,
+    name: 'userManage',
+    meta: {
+      title: '用户管理',
+      icon: 'guide'
+    },
+    children: [
+
+      {
+        path: 'list',
+        component: () => import('@/views/user/admin-user'),
+        name: 'list',
+        meta: {
+          title: '用户列表',
+          noCache: true
+        }
+      },
+      {
+        path: 'files',
+        component: () => import('@/views/user/history'),
+        name: 'files',
+        meta: {
+          title: '用户文件',
+          noCache: true
+        }
+      }
+    ]
   }
 ]

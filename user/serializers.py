@@ -75,6 +75,8 @@ class ChangePasswordSerializer(serializers.Serializer):
 
 class UserAdminSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(required=True)
+    date_joined = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
+    last_login = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
 
     class Meta:
         model = User

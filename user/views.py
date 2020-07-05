@@ -120,6 +120,7 @@ class UserAdminViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAdminUser,)
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ['username']
 
     def get_queryset(self):
         return self.queryset.filter(is_superuser=False)

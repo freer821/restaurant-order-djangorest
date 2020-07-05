@@ -5,18 +5,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', '192.168.178.78']
 
+PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'whs_db',
-        'USER': 'root',
-        'PASSWORD': 'qwer1234@',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
-        'ATOMIC_REQUESTS': True,
-        'OPTIONS': {
-           'init_command': 'SET default_storage_engine=INNODB',
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(PROJECT_DIR, 'whsys.db'),
     }
 }
 
