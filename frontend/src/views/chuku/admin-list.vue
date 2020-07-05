@@ -171,6 +171,7 @@ export default {
   },
   created() {
     this.getList()
+    console.log(this.$store.getters.token)
   },
   methods: {
     tableRowClassName({ row, rowIndex }) {
@@ -213,6 +214,7 @@ export default {
         }).catch(err => {
           this.$message.error('删除失败！' + JSON.stringify(err.msg))
         })
+        this.$router.push({ path: '/admin/chuku/list' })
       }).catch(() => {
         this.$message({
           type: 'info',

@@ -30,6 +30,10 @@ class ResponseCustomMiddleware(MiddlewareMixin):
                         response.data = getStandardResponse(response.status_code, response.data)
 
                     response.status_code = 200
+            elif response.status_code < 300:
+                response.status_code = 200
+                response.data = getStandardResponse(200)
+
         return response
 
 
