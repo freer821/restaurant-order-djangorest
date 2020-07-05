@@ -112,6 +112,17 @@ class ChangePasswordView(generics.UpdateAPIView):
         return Response(getStandardResponse(500, serializer.errors))
 
 
+class FilemanagementViewSet(viewsets.ModelViewSet):
+    queryset = FileManagement.objects.all()
+    serializer_class = FileManagementSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return self.queryset.filter(owner=self.request.user).order_by('-updatedtime')
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user, file=self.request.FILES.get('file'))
 
 # ----------- Admin ---------------------
 class UserAdminViewSet(viewsets.ModelViewSet):
@@ -119,8 +130,6 @@ class UserAdminViewSet(viewsets.ModelViewSet):
     serializer_class = UserAdminSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAdminUser,)
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filterset_fields = ['username']
 
     def get_queryset(self):
         return self.queryset.filter(is_superuser=False)

@@ -87,7 +87,10 @@ class UserAdminSerializer(serializers.ModelSerializer):
 
 
 class FileManagementSerializer(serializers.ModelSerializer):
+    updatedtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
+    createdtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
+    notes = serializers.CharField(allow_blank=True, allow_null=True, required=False)  # 负责人
 
     class Meta:
         model = FileManagement
-        fields = '__all__'
+        exclude = ['owner']

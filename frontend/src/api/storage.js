@@ -2,16 +2,15 @@ import request from '@/utils/request'
 
 export function listStorage(query) {
   return request({
-    url: '/storage/list',
+    url: '/store',
     method: 'get',
     params: query
   })
 }
 
 export function createStorage(data) {
-  console.log(data)
   return request({
-    url: '/admin/store/',
+    url: '/store/',
     method: 'post',
     data
   })

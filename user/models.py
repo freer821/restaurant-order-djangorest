@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+def upload_to(instance, filename):
+    return 'frontend/dist/files/{owner}/{filename}'.format(
+        owner=instance.owner, filename=filename)
+
 # Create your models here.
 class Profile(models.Model):
     owner = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
@@ -18,4 +22,6 @@ class Profile(models.Model):
 class FileManagement(models.Model):
     owner = models.ForeignKey(User, related_name='filemanagement', on_delete=models.CASCADE)
     notes = models.CharField(max_length=200, default='')
-    file = models.FileField(blank=True, default='')
+    file = models.FileField(upload_to = upload_to, default="")
+    createdtime = models.DateTimeField(auto_now_add=True)
+    updatedtime = models.DateTimeField(auto_now=True)

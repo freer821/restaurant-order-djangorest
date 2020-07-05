@@ -1,6 +1,6 @@
 .idea
 **/__pycache__
 **/migrations/**
-frontend/dist
+frontend/dist/**
 frontend/node_modules
 config/whsys.db

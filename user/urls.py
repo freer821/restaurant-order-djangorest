@@ -5,8 +5,9 @@ from rest_framework import routers
 from .views import *
 
 router = routers.SimpleRouter()
-router.register(r'users', UserAdminViewSet)
-router.register(r'store', AdminFilemanagementViewSet)
+router.register(r'admin/users', UserAdminViewSet)
+router.register(r'admin/store', AdminFilemanagementViewSet)
+router.register(r'store', FilemanagementViewSet)
 
 urlpatterns = [
     path('regist', register),
@@ -18,5 +19,5 @@ urlpatterns = [
     path('user/profile', UserRetrieveUpdateView.as_view()),
     path('user/changepassword', ChangePasswordView.as_view()),
 
-    url(r'^admin/', include(router.urls))
+    url(r'^', include(router.urls))
 ]
