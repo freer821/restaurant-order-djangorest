@@ -3,7 +3,6 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.key" clearable class="filter-item" style="width: 200px;" placeholder="请输入对象KEY" />
       <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="请输入对象名称" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
@@ -13,26 +12,17 @@
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
-      <el-table-column align="center" label="对象KEY" prop="key" />
+      <el-table-column align="center" label="名称" prop="file" />
 
-      <el-table-column align="center" label="对象名称" prop="name" />
+      <el-table-column align="center" label="类型" prop="type" />
 
-      <el-table-column align="center" label="对象类型" prop="type" />
+      <el-table-column align="center" label="大小" prop="size" />
 
-      <el-table-column align="center" label="对象大小" prop="size" />
-
-      <el-table-column align="center" property="url" label="图片">
-        <template slot-scope="scope">
-          <img :src="scope.row.url" width="40">
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="图片链接" prop="url" />
+      <el-table-column align="center" label="链接" prop="url" />
 
       <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button v-permission="['POST /admin/storage/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button v-permission="['POST /admin/storage/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -77,10 +67,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        key: undefined,
-        name: undefined,
-        sort: 'add_time',
-        order: 'desc'
+        name: undefined
       },
       createDialogVisible: false,
       dataForm: {
@@ -101,8 +88,9 @@ export default {
     getList() {
       this.listLoading = true
       listStorage(this.listQuery).then(response => {
-        this.list = response.data.data.list
-        this.total = response.data.data.total
+        console.log(response)
+        this.list = response.data.results
+        this.total = response.data.count
         this.listLoading = false
       }).catch(() => {
         this.list = []

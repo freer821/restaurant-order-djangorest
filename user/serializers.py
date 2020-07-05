@@ -2,6 +2,8 @@ from abc import ABC
 
 from django.contrib.auth.models import User
 from rest_framework import serializers
+
+from config import settings
 from config.settings import IS_SEND_REGIST_MAIL
 from user.models import Profile, FileManagement
 from user.services import sendActiveEmail
@@ -90,6 +92,13 @@ class FileManagementSerializer(serializers.ModelSerializer):
     updatedtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
     createdtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
     notes = serializers.CharField(allow_blank=True, allow_null=True, required=False)  # 负责人
+    url = serializers.SerializerMethodField('get_file_url')
+
+    def get_file_url(self, obj):
+        request = self.context.get('request')
+        file_url = '%s%s' % (settings.STATIC_URL, obj.file)
+        return request.build_absolute_uri(file_url)
+
 
     class Meta:
         model = FileManagement

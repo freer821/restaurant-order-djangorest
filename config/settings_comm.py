@@ -131,6 +131,13 @@ CORS_ALLOW_CREDENTIALS = True
 
 STATIC_URL = '/static/'
 
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'assets'),
+)
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'assets')
+
+
 
 # App default configurations
 IS_SEND_REGIST_MAIL = True

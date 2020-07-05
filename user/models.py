@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 def upload_to(instance, filename):
-    return 'frontend/dist/files/{owner}/{filename}'.format(
+    return 'files/{owner}/{filename}'.format(
         owner=instance.owner, filename=filename)
 
 # Create your models here.
