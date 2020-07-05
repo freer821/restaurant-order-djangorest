@@ -113,10 +113,9 @@
 </style>
 
 <script>
-import { listAdminChuku } from '@/api/chuku'
+import { listUserChuku } from '@/api/chuku'
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-import { mapGetters } from 'vuex' // Secondary package based on el-pagination
 
 export default {
   name: 'ForecastsList',
@@ -155,16 +154,6 @@ export default {
       downloadLoading: false
     }
   },
-  computed: {
-    ...mapGetters([
-      'current_user'
-    ])
-  },
-  watch: {
-    current_user: function(val) {
-      this.getList()
-    }
-  },
   created() {
     this.getList()
   },
@@ -178,9 +167,7 @@ export default {
     getList() {
       this.listLoading = true
       this.listQuery.offset = (this.listQuery.page - 1) * this.listQuery.limit
-      this.listQuery.owner = this.current_user === 'all' ? undefined : this.current_user
-
-      listAdminChuku(this.listQuery).then(response => {
+      listUserChuku(this.listQuery).then(response => {
         console.log(response.data)
         this.list = response.data.results
         this.total = response.data.count
@@ -196,10 +183,10 @@ export default {
       this.getList()
     },
     handleCreate() {
-      this.$router.push({ path: '/chuku/single-create' })
+      this.$router.push({ path: '/admin/chuku/create' })
     },
     handleUpdate(row) {
-      this.$router.push({ path: '/chuku/edit', query: { id: row.id }})
+      this.$router.push({ path: '/admin/chuku/edit', query: { id: row.id }})
     },
     showDetail(detail) {
       this.goodsDetail = detail
