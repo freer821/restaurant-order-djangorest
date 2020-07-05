@@ -35,7 +35,7 @@ router.beforeEach(async(to, from, next) => {
         } catch (err) {
           // remove token and go to login page to re-login
           await store.dispatch('resetToken')
-          Message.error(err || 'Has Error')
+          Message.error(JSON.stringify(err.msg) || 'Has Error')
           next(`/login?redirect=${to.path}`)
           NProgress.done()
         }

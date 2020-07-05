@@ -95,6 +95,18 @@ const user = {
           reject(error)
         })
       })
+    },
+
+    // remove token
+    resetToken({ commit }) {
+      return new Promise(resolve => {
+        commit('SET_TOKEN', '')
+        commit('SET_IS_ADMIN', undefined)
+        commit('SET_USERNAME', '')
+        commit('SET_PROFILE', '')
+        removeToken()
+        resolve()
+      })
     }
 
   }
