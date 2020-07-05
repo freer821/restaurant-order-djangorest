@@ -9,8 +9,9 @@ export function listStorage(query) {
 }
 
 export function createStorage(data) {
+  console.log(data)
   return request({
-    url: '/storage/create',
+    url: '/admin/store/',
     method: 'post',
     data
   })

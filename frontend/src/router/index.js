@@ -195,10 +195,9 @@ export const userRouterMap = [
     path: '/profile',
     component: Layout,
     redirect: '/profile/info',
-    hidden: true,
     name: 'profileManage',
     meta: {
-      title: '账户管理',
+      title: '个人中心',
       icon: 'chart'
     },
     children: [
@@ -218,6 +217,15 @@ export const userRouterMap = [
         name: 'profilePassword',
         meta: {
           title: '修改密码',
+          noCache: true
+        }
+      },
+      {
+        path: 'files',
+        component: () => import('@/views/user/files'),
+        name: 'files',
+        meta: {
+          title: '用户文件',
           noCache: true
         }
       }
@@ -354,7 +362,7 @@ export const adminRouterMap = [
 
       {
         path: 'list',
-        component: () => import('@/views/user/admin-user'),
+        component: () => import('@/views/user/admin-user-list'),
         name: 'list',
         meta: {
           title: '用户列表',
@@ -363,7 +371,7 @@ export const adminRouterMap = [
       },
       {
         path: 'files',
-        component: () => import('@/views/user/history'),
+        component: () => import('@/views/user/admin-files'),
         name: 'files',
         meta: {
           title: '用户文件',

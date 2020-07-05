@@ -3,7 +3,7 @@ from abc import ABC
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from config.settings import IS_SEND_REGIST_MAIL
-from user.models import Profile
+from user.models import Profile, FileManagement
 from user.services import sendActiveEmail
 
 
@@ -84,3 +84,10 @@ class UserAdminSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'username': {'read_only': True}
         }
+
+
+class FileManagementSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FileManagement
+        fields = '__all__'

@@ -13,3 +13,9 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.owner.username
+
+
+class FileManagement(models.Model):
+    owner = models.ForeignKey(User, related_name='filemanagement', on_delete=models.CASCADE)
+    notes = models.CharField(max_length=200, default='')
+    file = models.FileField(blank=True, default='')

@@ -124,3 +124,14 @@ class UserAdminViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.queryset.filter(is_superuser=False)
+
+
+class AdminFilemanagementViewSet(viewsets.ModelViewSet):
+    queryset = FileManagement.objects.all()
+    serializer_class = FileManagementSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAdminUser,)
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+
+    def pre_save(self, obj):
+        obj.file = self.request.FILES.get('file')
