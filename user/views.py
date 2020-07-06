@@ -11,6 +11,7 @@ from rest_framework.response import Response
 
 from common.utils import getRandomNo
 from config.middleware import getStandardResponse
+from config.permissions import IsOwner
 from .serializers import *
 from .services import sendNewPassw, activate_user_handle
 
@@ -116,7 +117,9 @@ class FilemanagementViewSet(viewsets.ModelViewSet):
     queryset = FileManagement.objects.all()
     serializer_class = FileManagementSerializer
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticated, IsOwner)
+    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
+    filterset_fields = ['name']
 
     def get_queryset(self):
         return self.queryset.filter(owner=self.request.user).order_by('-updatedtime')

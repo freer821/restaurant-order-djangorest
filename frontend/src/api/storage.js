@@ -16,6 +16,13 @@ export function createStorage(data) {
   })
 }
 
+export function delStorage(id) {
+  return request({
+    url: '/store/' + id + '/',
+    method: 'DELETE'
+  })
+}
+
 export function readStorage(data) {
   return request({
     url: '/storage/read',

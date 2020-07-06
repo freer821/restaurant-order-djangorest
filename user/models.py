@@ -21,7 +21,8 @@ class Profile(models.Model):
 
 class FileManagement(models.Model):
     owner = models.ForeignKey(User, related_name='filemanagement', on_delete=models.CASCADE)
-    notes = models.CharField(max_length=200, default='')
+    name = models.CharField(max_length=200, default='')
+    size = models.CharField(max_length=50, default='')
     file = models.FileField(upload_to = upload_to, default="")
     createdtime = models.DateTimeField(auto_now_add=True)
     updatedtime = models.DateTimeField(auto_now=True)
