@@ -104,8 +104,8 @@ export default {
     handleUpload(item) {
       this.$refs.upload.clearFiles()
 
-      if (item.file.size > 2097152) {
-        this.$notify.error('文件大于2m，请修改文件大小后再上传！')
+      if (item.file.size > 3145728) {
+        this.$notify.error('文件大于3m，请修改文件大小后再上传！')
         this.createDialogVisible = false
       } else {
         const formData = new FormData()

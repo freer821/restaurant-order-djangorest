@@ -3,36 +3,29 @@
 
     <!-- 查询和其他操作 -->
     <div class="filter-container">
-      <el-input v-model="listQuery.key" clearable class="filter-item" style="width: 200px;" placeholder="请输入对象KEY" />
       <el-input v-model="listQuery.name" clearable class="filter-item" style="width: 200px;" placeholder="请输入对象名称" />
-      <el-button v-permission="['GET /admin/storage/list']" class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-      <el-button v-permission="['POST /admin/storage/create']" class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
-      <el-button :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
     </div>
 
     <!-- 查询结果 -->
     <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
 
-      <el-table-column align="center" label="对象KEY" prop="key" />
+      <el-table-column align="center" label="名称" prop="name" />
 
-      <el-table-column align="center" label="对象名称" prop="name" />
+      <el-table-column align="center" label="上传时间" prop="createdtime" />
 
-      <el-table-column align="center" label="对象类型" prop="type" />
+      <el-table-column align="center" label="大小(KB)" prop="size" />
 
-      <el-table-column align="center" label="对象大小" prop="size" />
-
-      <el-table-column align="center" property="url" label="图片">
-        <template slot-scope="scope">
-          <img :src="scope.row.url" width="40">
+      <el-table-column align="center" label="文件" width="200" class-name="small-padding fixed-width">
+        <template slot-scope="{row}">
+          <el-link :href="row.url" type="success">下载</el-link>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="图片链接" prop="url" />
-
       <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
-        <template slot-scope="scope">
-          <el-button v-permission="['POST /admin/storage/update']" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button v-permission="['POST /admin/storage/delete']" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+        <template slot-scope="{row}">
+          <el-button type="danger" size="mini" @click="handleDelete(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -41,30 +34,19 @@
 
     <!-- 添加对话框 -->
     <el-dialog :visible.sync="createDialogVisible" title="上传对象">
-      <el-upload ref="upload" :show-file-list="false" :limit="1" :http-request="handleUpload" action="#" list-type="picture">
-        <el-button type="primary">点击上传</el-button>
+      <el-upload ref="upload" drag :show-file-list="false" :limit="1" :http-request="handleUpload" action="#" list-type="picture">
+        <i class="el-icon-upload" />
+        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <div slot="tip" class="el-upload__tip">不超过2mb</div>
       </el-upload>
     </el-dialog>
-
-    <!-- 修改对话框 -->
-    <el-dialog :visible.sync="updateDialogVisible" title="修改对象名称">
-      <el-form ref="dataForm" :rules="rules" :model="dataForm" status-icon label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="对象名称" prop="name">
-          <el-input v-model="dataForm.name" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="updateDialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="updateData">确定</el-button>
-      </div>
-    </el-dialog>
-
   </div>
 </template>
 
 <script>
-import { listStorage, createStorage, updateStorage, deleteStorage } from '@/api/storage'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import { listAdminStorage, createAdminStorage, delAdminStorage } from '@/api/storage'
+import Pagination from '@/components/Pagination'
+import { mapGetters } from 'vuex' // Secondary package based on el-pagination
 
 export default {
   name: 'Storage',
@@ -77,10 +59,7 @@ export default {
       listQuery: {
         page: 1,
         limit: 20,
-        key: undefined,
-        name: undefined,
-        sort: 'add_time',
-        order: 'desc'
+        name: undefined
       },
       createDialogVisible: false,
       dataForm: {
@@ -91,7 +70,19 @@ export default {
       rules: {
         name: [{ required: true, message: '对象名称不能为空', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      users: []
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'current_user',
+      'all_users'
+    ])
+  },
+  watch: {
+    current_user: function(val) {
+      this.getList()
     }
   },
   created() {
@@ -100,9 +91,11 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      listStorage(this.listQuery).then(response => {
-        this.list = response.data.data.list
-        this.total = response.data.data.total
+      this.listQuery.owner = this.current_user === 'all' ? undefined : this.current_user
+
+      listAdminStorage(this.listQuery).then(response => {
+        this.list = response.data.results
+        this.total = response.data.count
         this.listLoading = false
       }).catch(() => {
         this.list = []
@@ -126,18 +119,27 @@ export default {
     handleUpload(item) {
       this.$refs.upload.clearFiles()
 
-      const formData = new FormData()
-      formData.append('file', item.file)
-      createStorage(formData).then(response => {
-        this.list.unshift(response.data)
-        this.createDialogVisible = false
-        this.$notify.success({
-          title: '成功',
-          message: '上传成功'
+      if (this.current_user === 'all') {
+        this.$notify.error('请先选择用户！')
+      } else {
+        const formData = new FormData()
+        formData.append('size', item.file.size)
+        formData.append('name', item.file.name)
+        formData.append('file', item.file)
+        formData.append('owner', this.current_user)
+
+        createAdminStorage(formData).then(response => {
+          this.list.unshift(response.data)
+          this.createDialogVisible = false
+          this.$notify.success({
+            title: '成功',
+            message: '上传成功'
+          })
+        }).catch(err => {
+          console.log(err)
+          this.$message.error('上传失败，请重新上传')
         })
-      }).catch(() => {
-        this.$message.error('上传失败，请重新上传')
-      })
+      }
     },
     handleUpdate(row) {
       this.dataForm = Object.assign({}, row)
@@ -146,53 +148,19 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          updateStorage(this.dataForm).then(() => {
-            for (const v of this.list) {
-              if (v.id === this.dataForm.id) {
-                const index = this.list.indexOf(v)
-                this.list.splice(index, 1, this.dataForm)
-                break
-              }
-            }
-            this.updateDialogVisible = false
-            this.$notify.success({
-              title: '成功',
-              message: '更新成功'
-            })
-          }).catch(response => {
-            this.$notify.error({
-              title: '失败',
-              message: response.data.errmsg
-            })
-          })
-        }
-      })
-    },
     handleDelete(row) {
-      deleteStorage(row).then(response => {
+      delAdminStorage(row.id).then(response => {
         this.$notify.success({
           title: '成功',
           message: '删除成功'
         })
         const index = this.list.indexOf(row)
         this.list.splice(index, 1)
-      }).catch(response => {
+      }).catch(err => {
         this.$notify.error({
           title: '失败',
-          message: response.data.errmsg
+          message: err.msg
         })
-      })
-    },
-    handleDownload() {
-      this.downloadLoading = true
-      import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['ID', '对象KEY', '对象名称', '对象类型', '对象大小', '访问链接']
-        const filterVal = ['id', 'key', 'name', 'type', 'size', 'url']
-        excel.export_json_to_excel2(tHeader, this.list, filterVal, '对象存储信息')
-        this.downloadLoading = false
       })
     }
   }

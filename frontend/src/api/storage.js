@@ -23,29 +23,25 @@ export function delStorage(id) {
   })
 }
 
-export function readStorage(data) {
+export function listAdminStorage(query) {
   return request({
-    url: '/storage/read',
+    url: '/admin/store',
     method: 'get',
-    data
+    params: query
   })
 }
 
-export function updateStorage(data) {
+export function createAdminStorage(data) {
   return request({
-    url: '/storage/update',
+    url: '/admin/store/',
     method: 'post',
     data
   })
 }
 
-export function deleteStorage(data) {
+export function delAdminStorage(id) {
   return request({
-    url: '/storage/delete',
-    method: 'post',
-    data
+    url: '/admin/store/' + id + '/',
+    method: 'DELETE'
   })
 }
-
-const uploadPath = process.env.VUE_APP_BASE_API + '/storage/create'
-export { uploadPath }
