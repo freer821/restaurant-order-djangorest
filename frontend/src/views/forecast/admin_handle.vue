@@ -25,10 +25,9 @@
         <el-form-item label="入库时间" prop="arrivedtime">
           <el-date-picker
             v-model="forecast.arrivedtime"
-            type="date"
+            type="datetime"
             placeholder="选择日期"
-            format="yyyy 年 MM 月 dd 日"
-            value-format="yyyy-MM-dd"
+            default-time="12:00:00"
           />
         </el-form-item>
       </el-form>
