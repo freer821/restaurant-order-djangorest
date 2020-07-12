@@ -102,7 +102,7 @@ class FileManagementSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FileManagement
-        exclude = 'owner'
+        exclude = ['owner']
 
 
 class AdminFileManagementSerializer(serializers.ModelSerializer):

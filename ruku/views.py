@@ -13,6 +13,7 @@ from rest_framework.response import Response
 from config.middleware import getStandardResponse
 from ruku.models import Forecast
 from ruku.serializers import UserForecastSerializer, AdminForecastSerializer
+from warehouse.apps import addWareIntoWarehous
 
 
 class UserForecastViewSet(viewsets.ModelViewSet):
@@ -32,7 +33,7 @@ class UserForecastViewSet(viewsets.ModelViewSet):
         if forecast is not None:
             return Response(getStandardResponse(300, '%s and %s already exits' % (data['logistic_code'], data['product_name'] )))
 
-        super(UserForecastViewSet, self).create(request, args, kwargs)
+        return super(UserForecastViewSet, self).create(request, args, kwargs)
 
 
     def perform_create(self, serializer):
@@ -58,5 +59,6 @@ class AdminForecastViewSet(viewsets.ModelViewSet):
             forecast.admin_extra=json.dumps(data.get('admin_extra'))
             forecast.arrivedtime=timezone.now()
             forecast.save()
+            addWareIntoWarehous(current_user, forecast.product_name, forecast.real_num)
             return Response(getStandardResponse(200))
         return Response(getStandardResponse(400, 'forecast not found!'))
