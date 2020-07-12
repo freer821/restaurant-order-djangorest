@@ -165,7 +165,6 @@ export default {
       this.listLoading = true
       this.listQuery.offset = (this.listQuery.page - 1) * this.listQuery.limit
       listUserChuku(this.listQuery).then(response => {
-        console.log(response.data)
         this.list = response.data.results
         this.total = response.data.count
         this.listLoading = false

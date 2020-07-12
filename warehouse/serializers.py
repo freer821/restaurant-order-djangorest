@@ -6,8 +6,8 @@ from warehouse.models import *
 
 
 class WarehouseSerializer(serializers.ModelSerializer):
-    arrivedtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
-    createdtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
+    arrivedtime = serializers.DateTimeField(format="%Y-%m-%d", allow_null=True, required=False)
+    createdtime = serializers.DateTimeField(format="%Y-%m-%d", allow_null=True, required=False)
 
     class Meta:
         model = Warehouse
@@ -15,8 +15,8 @@ class WarehouseSerializer(serializers.ModelSerializer):
 
 
 class WarehouseDetailSerializer(serializers.ModelSerializer):
-    arrivedtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
-    createdtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
+    arrivedtime = serializers.DateTimeField(format="%Y-%m-%d", allow_null=True, required=False)
+    createdtime = serializers.DateTimeField(format="%Y-%m-%d", allow_null=True, required=False)
     descrp = serializers.JSONField(required=True)
     sn_code = serializers.CharField(required=True)
     product_name = serializers.CharField(required=True)

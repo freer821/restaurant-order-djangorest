@@ -55,10 +55,10 @@ class AdminForecastViewSet(viewsets.ModelViewSet):
         forecast = Forecast.objects.filter(owner_id=current_user, product_name=request.data.get('product_name'),
                                            logistic_code=request.data.get('logistic_code')).first()
         if forecast is not None:
-            forecast.real_num = int(data.get('real_num'))
-            forecast.admin_extra=json.dumps(data.get('admin_extra'))
-            forecast.arrivedtime=timezone.now()
-            forecast.save()
+            data['owner'] = current_user
+            serializer = AdminForecastSerializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
             addWareIntoWarehous(current_user, forecast.product_name, forecast.real_num)
             return Response(getStandardResponse(200))
         return Response(getStandardResponse(400, 'forecast not found!'))

@@ -19,6 +19,16 @@
         <el-form-item label="SN码">
           <el-input v-model="forecast.admin_extra.sn_codes" type="textarea" :rows="2" placeholder="多个SN码，中间以英文逗号(,)隔开" />
         </el-form-item>
+        <el-form-item label="PLN码">
+          <el-input v-model="forecast.admin_extra.pln_codes" type="textarea" :rows="2" placeholder="多个PLN码，中间以英文逗号(,)隔开" />
+        </el-form-item>
+        <el-form-item label="入库时间" prop="arrivedtime">
+          <el-date-picker
+            v-model="forecast.arrivedtime"
+            type="date"
+            placeholder="选择日期"
+          />
+        </el-form-item>
       </el-form>
     </el-card>
     <div class="op-container">
@@ -40,15 +50,18 @@ export default {
         logistic_code: '',
         product_name: '',
         admin_extra: {
-          sn_codes: ''
-        }
+          sn_codes: '',
+          pln_codes: ''
+        },
+        arrivedtime: ''
       },
       rules: {
         product_name: [{ required: true, message: '产品名称不能为空', trigger: 'blur' }],
         real_num: [
           { required: true, message: '不能为空或非数字', trigger: 'blur' }
         ],
-        logistic_code: [{ required: true, message: '快递单号不能为空', trigger: 'blur' }]
+        logistic_code: [{ required: true, message: '快递单号不能为空', trigger: 'blur' }],
+        arrivedtime: [{ required: true, message: '入库时间不能为空', trigger: 'blur' }]
       }
     }
   },
@@ -84,8 +97,10 @@ export default {
         logistic_code: '',
         product_name: '',
         admin_extra: {
-          sn_codes: ''
-        }
+          sn_codes: '',
+          pln_codes: ''
+        },
+        arrivedtime: ''
       }
     }
   }

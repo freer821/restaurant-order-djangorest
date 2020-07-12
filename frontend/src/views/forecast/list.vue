@@ -56,7 +56,10 @@
 
       <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">
+            <span v-if="!scope.row.arrivedtime"> 编辑 </span>
+            <span v-else> 查看 </span>
+          </el-button>
           <el-button v-show="!scope.row.arrivedtime" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
@@ -96,7 +99,7 @@
 </style>
 
 <script>
-import { listForecasts } from '@/api/forecast'
+import { listForecasts, delForecast } from '@/api/forecast'
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
@@ -159,7 +162,12 @@ export default {
       this.detailDialogVisible = true
     },
     handleDelete(row) {
-
+      delForecast(row.id).then(responsoe => {
+        this.$message.success('删除成功！')
+        this.getList()
+      }).catch(err => {
+        this.$message.error('删除失败： ' + JSON.stringify(err))
+      })
     }
   }
 }

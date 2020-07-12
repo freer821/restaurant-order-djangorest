@@ -16,7 +16,7 @@
       </el-form-item>
     </el-form>
     <div style="margin-left:100px;">
-      <el-button type="primary" @click="change">确定</el-button>
+      <el-button type="primary" @click="change">修改</el-button>
     </div>
   </div>
 </template>

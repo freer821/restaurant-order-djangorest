@@ -31,6 +31,13 @@ export function editForecast(data) {
   })
 }
 
+export function delForecast(id) {
+  return request({
+    url: '/forecasts/' + id + '/',
+    method: 'DELETE'
+  })
+}
+
 export function listAdminForecasts(params) {
   return request({
     url: '/admin/forecasts/',
