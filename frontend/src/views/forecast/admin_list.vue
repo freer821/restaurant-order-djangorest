@@ -5,6 +5,15 @@
     <div class="filter-container">
       <el-input v-model="listQuery.product_name" clearable class="filter-item" style="width: 160px;" placeholder="请输入商品名称" />
       <el-input v-model="listQuery.logistic_code" clearable class="filter-item" style="width: 160px;" placeholder="请输入快递单号" />
+      <el-date-picker
+        v-model="arrivedtime"
+        type="datetimerange"
+        class="filter-item"
+        align="right"
+        start-placeholder="入库开始日期"
+        end-placeholder="入库结束日期"
+        :default-time="['00:00:00', '23:59:59']"
+      />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
     </div>
 
@@ -106,10 +115,13 @@ export default {
         page: 1,
         limit: 20,
         offset: 0,
+        start_date: undefined,
+        end_date: undefined,
         owner: undefined,
         product_name: undefined,
         logistic_code: undefined
       },
+      arrivedtime: [],
       goodsDetail: '',
       detailDialogVisible: false,
       downloadLoading: false
@@ -123,6 +135,15 @@ export default {
   watch: {
     current_user: function(val) {
       this.getList()
+    },
+    arrivedtime: function(val) {
+      if (Array.isArray(val)) {
+        this.listQuery.start_date = val[0]
+        this.listQuery.end_date = val[1]
+      } else {
+        this.listQuery.start_date = undefined
+        this.listQuery.end_date = undefined
+      }
     }
   },
   created() {

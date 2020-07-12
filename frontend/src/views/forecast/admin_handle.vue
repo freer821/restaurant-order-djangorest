@@ -27,6 +27,8 @@
             v-model="forecast.arrivedtime"
             type="date"
             placeholder="选择日期"
+            format="yyyy 年 MM 月 dd 日"
+            value-format="yyyy-MM-dd"
           />
         </el-form-item>
       </el-form>

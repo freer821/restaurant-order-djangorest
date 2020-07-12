@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
 from config.middleware import getStandardResponse
+from ruku.filters import AdminForecastFilter
 from ruku.models import Forecast
 from ruku.serializers import UserForecastSerializer, AdminForecastSerializer
 from warehouse.apps import addWareIntoWarehous
@@ -39,14 +40,14 @@ class UserForecastViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-
 class AdminForecastViewSet(viewsets.ModelViewSet):
     queryset = Forecast.objects.all()
     serializer_class = AdminForecastSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAdminUser,]
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filterset_fields = ['product_name', 'logistic_code', 'owner']
+    #filterset_fields = ['product_name', 'logistic_code', 'owner', 'arrivedtime' ]
+    filterset_class = AdminForecastFilter
 
     @action(detail=False, methods=['post'])
     def ruku_handle(self, request):
@@ -55,10 +56,10 @@ class AdminForecastViewSet(viewsets.ModelViewSet):
         forecast = Forecast.objects.filter(owner_id=current_user, product_name=request.data.get('product_name'),
                                            logistic_code=request.data.get('logistic_code')).first()
         if forecast is not None:
-            data['owner'] = current_user
-            serializer = AdminForecastSerializer(data=data)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
+            forecast.real_num = int(data.get('real_num'))
+            forecast.admin_extra = json.dumps(data.get('admin_extra'))
+            forecast.arrivedtime = data.get('arrivedtime')
+            forecast.save()
             addWareIntoWarehous(current_user, forecast.product_name, forecast.real_num)
             return Response(getStandardResponse(200))
         return Response(getStandardResponse(400, 'forecast not found!'))
