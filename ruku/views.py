@@ -3,8 +3,7 @@ import json
 import django_filters
 
 # Create your views here.
-from django.utils import timezone
-from rest_framework import generics, viewsets, pagination
+from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated, IsAdminUser

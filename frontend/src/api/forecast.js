@@ -69,3 +69,11 @@ export function updateForecastAdmin(data) {
   })
 }
 
+export function createForecastAdmin(data) {
+  return request({
+    url: '/admin/forecasts/',
+    method: 'post',
+    data
+  })
+}
+

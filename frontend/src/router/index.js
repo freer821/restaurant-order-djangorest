@@ -265,6 +265,15 @@ export const adminRouterMap = [
         }
       },
       {
+        path: 'create',
+        component: () => import('@/views/forecast/admin_create'),
+        name: 'forecastAdminCreate',
+        meta: {
+          title: '未预报入库',
+          noCache: true
+        }
+      },
+      {
         path: 'edit',
         component: () => import('@/views/forecast/admin_update'),
         name: 'forecastAdminUpdate',

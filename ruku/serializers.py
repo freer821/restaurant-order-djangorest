@@ -36,7 +36,7 @@ class AdminForecastSerializer(serializers.ModelSerializer):
     createdtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
     extra = serializers.JSONField(required=False)
     admin_extra = serializers.JSONField(required=False)
-
+    logistic_company = serializers.CharField(allow_blank=True, allow_null=True, required=False)
     class Meta:
         model = Forecast
         fields = '__all__'
