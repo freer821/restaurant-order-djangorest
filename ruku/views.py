@@ -46,7 +46,6 @@ class AdminForecastViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAdminUser,]
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    #filterset_fields = ['product_name', 'logistic_code', 'owner', 'arrivedtime' ]
     filterset_class = AdminForecastFilter
 
     @action(detail=False, methods=['post'])

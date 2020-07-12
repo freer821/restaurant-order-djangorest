@@ -62,6 +62,13 @@
 
       <el-table-column align="center" label="入库时间" prop="arrivedtime" />
 
+      <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">
+            编辑
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
@@ -174,18 +181,8 @@ export default {
       this.listQuery.page = 1
       this.getList()
     },
-    handleCreate() {
-      this.$router.push({ path: '/forecast/single-create' })
-    },
     handleUpdate(row) {
-      this.$router.push({ path: '/forecast/edit', query: { id: row.id }})
-    },
-    showDetail(detail) {
-      this.goodsDetail = detail
-      this.detailDialogVisible = true
-    },
-    handleDelete(row) {
-
+      this.$router.push({ path: '/admin/forecast/edit', query: { id: row.id }})
     }
   }
 }

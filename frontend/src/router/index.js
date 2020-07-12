@@ -263,6 +263,16 @@ export const adminRouterMap = [
           title: '入库扫描',
           noCache: true
         }
+      },
+      {
+        path: 'edit',
+        component: () => import('@/views/forecast/admin_update'),
+        name: 'forecastAdminUpdate',
+        meta: {
+          title: '预报更新',
+          noCache: true
+        },
+        hidden: true
       }
     ]
   },

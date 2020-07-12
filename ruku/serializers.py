@@ -32,7 +32,7 @@ class UserForecastSerializer(serializers.ModelSerializer):
 
 
 class AdminForecastSerializer(serializers.ModelSerializer):
-    arrivedtime = serializers.DateTimeField(format="%Y-%m-%d", allow_null=True, required=False)
+    arrivedtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
     createdtime = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=False)
     extra = serializers.JSONField(required=False)
     admin_extra = serializers.JSONField(required=False)

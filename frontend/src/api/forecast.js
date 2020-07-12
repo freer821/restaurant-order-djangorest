@@ -54,3 +54,18 @@ export function rukuForecast(data, current_user) {
   })
 }
 
+export function getForecastAdmin(id) {
+  return request({
+    url: '/admin/forecasts/' + id,
+    method: 'get'
+  })
+}
+
+export function updateForecastAdmin(data) {
+  return request({
+    url: '/admin/forecasts/' + data.id + '/',
+    method: 'put',
+    data
+  })
+}
+
