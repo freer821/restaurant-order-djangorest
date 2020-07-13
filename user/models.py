@@ -26,3 +26,12 @@ class FileManagement(models.Model):
     file = models.FileField(upload_to = upload_to, default="")
     createdtime = models.DateTimeField(auto_now_add=True)
     updatedtime = models.DateTimeField(auto_now=True)
+
+
+class ToDo(models.Model):
+    owner = models.ForeignKey(User, related_name='todo', on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, default='')
+    content = models.TextField(default="") # sender info, comment
+    status = models.CharField(max_length=50, default="") # mark like delete
+    createdtime = models.DateTimeField(auto_now_add=True)
+    updatedtime = models.DateTimeField(auto_now=True)

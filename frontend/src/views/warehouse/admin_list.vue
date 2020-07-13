@@ -104,7 +104,7 @@
       size="70%"
       :before-close="handleClose"
     >
-      <AdminWarehouseDetailList />
+      <AdminWarehouseDetailList :title="ware_detail_list.title" />
     </el-drawer>
   </div>
 </template>

@@ -13,7 +13,7 @@ from config.middleware import getStandardResponse
 from ruku.filters import AdminForecastFilter
 from ruku.models import Forecast
 from ruku.serializers import UserForecastSerializer, AdminForecastSerializer
-from warehouse.apps import addWareIntoWarehous
+from warehouse.apps import addWareIntoWarehous, changeWareIntoWarehous
 
 
 class UserForecastViewSet(viewsets.ModelViewSet):
@@ -61,3 +61,11 @@ class AdminForecastViewSet(viewsets.ModelViewSet):
             addWareIntoWarehous(current_user, forecast.product_name, forecast.real_num)
             return Response(getStandardResponse(200))
         return Response(getStandardResponse(400, 'forecast not found!'))
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        new_num = int(request.data.get('real_num'))
+        num_diff = new_num - instance.real_num
+        changeWareIntoWarehous(instance.owner, instance.product_name, num_diff)
+        
+        return super(AdminForecastViewSet, self).update(request, args, kwargs)

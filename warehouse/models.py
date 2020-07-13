@@ -20,5 +20,4 @@ class WarehouseDetail(models.Model):
     status = models.CharField(max_length=50, default="")
     sn_code = models.CharField(max_length=50, default="")
     descrp = models.TextField(default="")
-    createdtime = models.DateTimeField(auto_now_add=True)
-    updatedtime = models.DateTimeField(auto_now=True)
+    operation_time = models.DateTimeField(auto_now=True)

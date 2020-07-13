@@ -21,12 +21,13 @@
         </template>
 
       </el-table-column>
-      <el-table-column align="center" min-width="100" label="故障原因">
+      <el-table-column align="center" min-width="100" label="维修记录">
         <template slot-scope="{row}">
-          <span>{{ row.descrp.error_status | parseErrorStatus }}</span>
+          <span>{{ row.descrp.repair_record | parseRecordStatus }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" min-width="100" label="备注" prop="descrp.comment" />
+      <el-table-column align="center" min-width="100" label="操作时间" prop="operation_time" />
 
       <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
@@ -71,7 +72,7 @@ export default {
   name: 'AdminWarehouseDetailList',
   components: { BackToTop, Pagination },
   filters: {
-    parseErrorStatus(status) {
+    parseRecordStatus(status) {
       const statusMap = {
         software: '软件',
         hardware: '硬件'
@@ -89,6 +90,7 @@ export default {
       return statusMap[status]
     }
   },
+  props: ['title'],
   data() {
     return {
       list: [],
@@ -114,6 +116,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
+      this.listQuery.product_name = this.title
       this.listQuery.offset = (this.listQuery.page - 1) * this.listQuery.limit
       getAdminDetailCheckedWares(this.listQuery).then(response => {
         this.list = response.data.results

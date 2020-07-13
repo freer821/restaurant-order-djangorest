@@ -18,10 +18,11 @@
       </el-table-column>
       <el-table-column align="center" min-width="100" label="故障原因">
         <template slot-scope="{row}">
-          <span>{{ row.descrp.error_status | parseErrorStatus }}</span>
+          <span>{{ row.descrp.repair_record | parseRecordStatus }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" min-width="100" label="备注" prop="descrp.comment" />
+      <el-table-column align="center" min-width="100" label="操作时间" prop="operation_time" />
 
       <el-table-column align="center" label="操作时间" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
@@ -66,7 +67,7 @@ export default {
   name: 'WarehouseDetailList',
   components: { BackToTop, Pagination },
   filters: {
-    parseErrorStatus(status) {
+    parseRecordStatus(status) {
       const statusMap = {
         software: '软件',
         hardware: '硬件'

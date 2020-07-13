@@ -81,7 +81,7 @@ export default {
       this.$refs.forecast.validate((valid) => {
         if (valid) {
           updateForecastAdmin(this.forecast).then(response => {
-            this.$confirm('入库成功', '预报入库', {
+            this.$confirm('更新成功', '预报入库', {
               confirmButtonText: '前往预报列表',
               cancelButtonText: '继续添加'
             }).then(() => {

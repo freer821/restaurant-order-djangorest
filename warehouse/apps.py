@@ -18,3 +18,11 @@ def addWareIntoWarehous(user, product_name, num):
         warehouse.save()
 
 
+def changeWareIntoWarehous(user, product_name, num_diff):
+    warehouse = Warehouse.objects.filter(owner=user, product_name=product_name).first()
+    if warehouse is not None:
+        warehouse.unknown_num += num_diff
+        warehouse.save()
+    else:
+        raise Exception('changeWareIntoWarehous: '+ product_name + 'not found!')
+

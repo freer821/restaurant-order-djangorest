@@ -46,8 +46,8 @@
             />
           </el-select>
         </el-form-item>
-        <el-form-item v-show="ware_single_check.status==='error1'" label="故障类型" prop="error_status">
-          <el-checkbox-group v-model="ware_single_check.descrp.error_status">
+        <el-form-item v-show="ware_single_check.status==='normal'" label="维修记录" prop="repair_record">
+          <el-checkbox-group v-model="ware_single_check.descrp.repair_record">
             <el-checkbox label="hardware">硬件</el-checkbox>
             <el-checkbox label="software">软件</el-checkbox>
           </el-checkbox-group>
@@ -69,6 +69,14 @@
           prop="descrp"
         >
           <el-input v-model="ware_single_check.descrp.comment" type="textarea" :rows="2" />
+        </el-form-item>
+        <el-form-item label="操作时间" prop="operation_time">
+          <el-date-picker
+            v-model="ware_single_check.operation_time"
+            type="datetime"
+            placeholder="选择日期"
+            default-time="12:00:00"
+          />
         </el-form-item>
       </el-form>
     </el-card>
@@ -99,8 +107,9 @@ export default {
         sn_code: '',
         descrp: {
           comment: '',
-          error_status: []
-        }
+          repair_record: []
+        },
+        operation_time: ''
       },
       check_type: 'massiv',
       options: [{
@@ -157,7 +166,7 @@ export default {
         sn_code: '',
         descrp: {
           comment: '',
-          error_status: []
+          repair_record: []
         }
       }
     }
