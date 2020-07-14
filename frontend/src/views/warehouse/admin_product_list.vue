@@ -1,47 +1,48 @@
 <template>
   <div class="app-container">
+    <el-card class="box-card">
+      <h3>商品名称 - {{ title }}</h3>
+      <!-- 查询和其他操作 -->
+      <div class="filter-container">
+        <el-input v-model="listQuery.sn_code" clearable class="filter-item" style="width: 160px;" placeholder="请输入SN码" />
+        <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
+      </div>
 
-    <!-- 查询和其他操作 -->
-    <div class="filter-container">
-      <el-input v-model="listQuery.sn_code" clearable class="filter-item" style="width: 160px;" placeholder="请输入SN码" />
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
-    </div>
+      <!-- 查询结果 -->
+      <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
+        <el-table-column align="center" label="ID" width="80">
+          <template slot-scope="{row}">
+            <span>{{ row.id }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" min-width="100" label="SN码" prop="sn_code" />
+        <el-table-column align="center" min-width="100" label="状态" prop="status">
+          <template slot-scope="{row}">
+            <span>{{ row.status | parseStatus }}</span>
+          </template>
 
-    <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-      <el-table-column align="center" label="ID" width="80">
-        <template slot-scope="{row}">
-          <span>{{ row.id }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" min-width="100" label="SN码" prop="sn_code" />
-      <el-table-column align="center" min-width="100" label="状态" prop="status">
-        <template slot-scope="{row}">
-          <span>{{ row.status | parseStatus }}</span>
-        </template>
+        </el-table-column>
+        <el-table-column align="center" min-width="100" label="维修记录">
+          <template slot-scope="{row}">
+            <span>{{ row.descrp.repair_record | parseRecordStatus }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" min-width="100" label="备注" prop="descrp.comment" />
+        <el-table-column align="center" min-width="100" label="操作时间" prop="operation_time" />
 
-      </el-table-column>
-      <el-table-column align="center" min-width="100" label="维修记录">
-        <template slot-scope="{row}">
-          <span>{{ row.descrp.repair_record | parseRecordStatus }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" min-width="100" label="备注" prop="descrp.comment" />
-      <el-table-column align="center" min-width="100" label="操作时间" prop="operation_time" />
+        <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
+          <template slot-scope="{row}">
+            <el-button type="primary" size="small" @click="handleUpdate(row)">编辑</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
 
-      <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
-        <template slot-scope="{row}">
-          <el-button type="primary" size="small" @click="handleUpdate(row)">编辑</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+      <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
-
-    <el-tooltip placement="top" content="返回顶部">
-      <back-to-top :visibility-height="100" />
-    </el-tooltip>
-
+      <el-tooltip placement="top" content="返回顶部">
+        <back-to-top :visibility-height="100" />
+      </el-tooltip>
+    </el-card>
   </div>
 </template>
 
@@ -90,9 +91,9 @@ export default {
       return statusMap[status]
     }
   },
-  props: ['title'],
   data() {
     return {
+      title: '',
       list: [],
       total: 0,
       listLoading: true,
@@ -112,12 +113,13 @@ export default {
     }
   },
   mounted() {
+    this.title = this.$route.query.title
     this.getList()
   },
   methods: {
     getList() {
       this.listLoading = true
-      this.listQuery.product_name = this.title
+      this.listQuery.warehouse = this.$route.query.warehouse
       this.listQuery.offset = (this.listQuery.page - 1) * this.listQuery.limit
       console.log(this.listQuery)
       getAdminDetailCheckedWares(this.listQuery).then(response => {

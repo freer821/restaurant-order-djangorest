@@ -62,7 +62,7 @@
           <el-button
             v-show="row.edit"
             class="cancel-btn"
-            size="small"
+            size="mini"
             icon="el-icon-refresh"
             type="warning"
             @click="cancelEdit(row)"
@@ -72,7 +72,7 @@
           <el-button
             v-if="row.edit"
             type="success"
-            size="small"
+            size="mini"
             icon="el-icon-circle-check-outline"
             @click="confirmEdit(row)"
           >
@@ -81,13 +81,13 @@
           <el-button
             v-else
             type="primary"
-            size="small"
+            size="mini"
             icon="el-icon-edit"
             @click="row.edit=!row.edit"
           >
             编辑
           </el-button>
-          <el-button type="primary" size="small" @click="handleDetail(row)">详情</el-button>
+          <el-button v-show="row.product_count > 0" type="primary" size="mini" @click="handleDetail(row)">详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -226,7 +226,7 @@ export default {
       })
     },
     handleDetail(row) {
-      this.$router.push({ path: '/admin/warehouse/product', query: { warehouse: row.id }})
+      this.$router.push({ path: '/admin/warehouse/product', query: { warehouse: row.id, title: row.product_name }})
     },
     handleClose(done) {
       this.ware_detail_list.title = ''

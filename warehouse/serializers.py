@@ -8,10 +8,12 @@ from warehouse.models import *
 class WarehouseSerializer(serializers.ModelSerializer):
     arrivedtime = serializers.DateTimeField(format="%Y-%m-%d", allow_null=True, required=False)
     createdtime = serializers.DateTimeField(format="%Y-%m-%d", allow_null=True, required=False)
+    product_count = serializers.IntegerField( source='product.count', read_only=True)
 
     class Meta:
         model = Warehouse
         fields = '__all__'
+
 
 
 class ProductSerializer(serializers.ModelSerializer):

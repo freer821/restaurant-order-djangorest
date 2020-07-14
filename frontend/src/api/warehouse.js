@@ -26,7 +26,7 @@ export function pushMassivCheckedWares(data) {
 
 export function pushDetailCheckedWares(data) {
   return request({
-    url: '/admin/warehousedetail/',
+    url: '/admin/product/',
     method: 'post',
     data
   })
@@ -34,7 +34,7 @@ export function pushDetailCheckedWares(data) {
 
 export function getAdminDetailCheckedWares(params) {
   return request({
-    url: '/admin/warehousedetail/',
+    url: '/admin/product/',
     method: 'get',
     params
   })
@@ -42,14 +42,14 @@ export function getAdminDetailCheckedWares(params) {
 
 export function getDetailCheckedWare(id) {
   return request({
-    url: '/admin/warehousedetail/' + id,
+    url: '/admin/product/' + id,
     method: 'get'
   })
 }
 
 export function editDetailCheckedWare(data) {
   return request({
-    url: '/admin/warehousedetail/' + data.id + '/',
+    url: '/admin/product/' + data.id + '/',
     method: 'put',
     data
   })
@@ -65,7 +65,7 @@ export function getUserWarehouseList(params) {
 
 export function getUserDetailCheckedWares(params) {
   return request({
-    url: '/warehousedetail/',
+    url: '/product/',
     method: 'get',
     params
   })

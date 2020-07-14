@@ -89,6 +89,8 @@ class AdminProductViewSet(viewsets.ModelViewSet):
         warehouse.unknown_num -= 1
         warehouse.save()
 
+        request.data['warehouse'] = warehouse.pk
+
         return super(AdminProductViewSet, self).create(request, args, kwargs)
 
 
