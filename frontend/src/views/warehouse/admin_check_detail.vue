@@ -10,7 +10,7 @@
         <el-form-item
           label="状态"
         >
-          <el-select v-model="ware_single_check.status" clearable placeholder="请选择">
+          <el-select v-model="ware_single_check.status" clearable placeholder="请选择" @change="statuschanged">
             <el-option
               v-for="item in options"
               :key="item.value"
@@ -78,7 +78,6 @@ export default {
         },
         operation_time: ''
       },
-      origin_ware_single_check: {},
       options: [{
         value: 'normal',
         label: '良品'
@@ -99,7 +98,6 @@ export default {
   created() {
     getDetailCheckedWare(this.$route.query.id).then(respone => {
       this.ware_single_check = respone.data
-      this.origin_ware_single_check = Object.assign({}, this.ware_single_check)
     }).catch(err => {
       console.log(err)
       this.$message.error('加载失败')
@@ -108,9 +106,6 @@ export default {
   methods: {
     submitForm() {
       this.ware_single_check.current_user = this.current_user
-      if (this.ware_single_check.status !== 'error1') {
-        this.ware_single_check.descrp.error_status = []
-      }
       editDetailCheckedWare(this.ware_single_check).then(response => {
         this.$message.success('录入成功！')
         this.resetForm()
@@ -119,8 +114,19 @@ export default {
       })
     },
     resetForm() {
-      this.ware_single_check = this.origin_ware_single_check
+      getDetailCheckedWare(this.$route.query.id).then(respone => {
+        this.ware_single_check = respone.data
+      }).catch(err => {
+        console.log(err)
+        this.$message.error('加载失败')
+      })
+    },
+    statuschanged(val) {
+      if (this.ware_single_check.status !== 'normal') {
+        this.ware_single_check.descrp.repair_record = []
+      }
     }
+
   }
 }
 </script>

@@ -227,11 +227,6 @@ export default {
     },
     handleDetail(row) {
       this.$router.push({ path: '/admin/warehouse/product', query: { warehouse: row.id, title: row.product_name }})
-    },
-    handleClose(done) {
-      this.ware_detail_list.title = ''
-      this.ware_detail_list.show = false
-      done()
     }
 
   }

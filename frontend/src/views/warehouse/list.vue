@@ -16,12 +16,7 @@
       fit
       show-summary
       highlight-current-row
-      @selection-change="handleSelectionChange"
     >
-      <el-table-column
-        type="selection"
-        width="55"
-      />
 
       <el-table-column align="center" min-width="100" label="商品名称" prop="product_name" />
 
@@ -35,7 +30,7 @@
       </el-table-column>
       <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
         <template slot-scope="{row}">
-          <el-button type="primary" size="small" @click="handleDetail(row)">详情</el-button>
+          <el-button v-show="row.product_count > 0" type="primary" size="small" @click="handleDetail(row)">详情</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -45,15 +40,6 @@
     <el-tooltip placement="top" content="返回顶部">
       <back-to-top :visibility-height="100" />
     </el-tooltip>
-    <el-drawer
-      :title="ware_detail_list.title"
-      :visible.sync="ware_detail_list.show"
-      direction="rtl"
-      size="70%"
-      :before-close="handleClose"
-    >
-      <WarehouseDetailList />
-    </el-drawer>
   </div>
 </template>
 
@@ -79,10 +65,9 @@
 import { getUserWarehouseList } from '@/api/warehouse'
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination'
-import WarehouseDetailList from './components/waredetail_list'
 export default {
   name: 'WarehouseList',
-  components: { BackToTop, Pagination, WarehouseDetailList },
+  components: { BackToTop, Pagination },
   data() {
     return {
       list: [],
@@ -130,18 +115,8 @@ export default {
       this.getList()
     },
     handleDetail(row) {
-      this.ware_detail_list.title = row.product_name
-      this.ware_detail_list.show = true
-    },
-    handleClose(done) {
-      this.ware_detail_list.title = ''
-      this.ware_detail_list.show = false
-      done()
-    },
-    handleSelectionChange(val) {
-      this.multipleSelection = val
+      this.$router.push({ path: '/warehouse/product', query: { warehouse: row.id, title: row.product_name }})
     }
-
   }
 }
 </script>

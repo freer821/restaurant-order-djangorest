@@ -10,11 +10,6 @@
 
       <!-- 查询结果 -->
       <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row>
-        <el-table-column align="center" label="ID" width="80">
-          <template slot-scope="{row}">
-            <span>{{ row.id }}</span>
-          </template>
-        </el-table-column>
         <el-table-column align="center" min-width="100" label="SN码" prop="sn_code" />
         <el-table-column align="center" min-width="100" label="状态" prop="status">
           <template slot-scope="{row}">
@@ -22,17 +17,16 @@
           </template>
 
         </el-table-column>
-        <el-table-column align="center" min-width="100" label="维修记录">
+        <el-table-column align="center" min-width="100" label="故障原因">
           <template slot-scope="{row}">
             <span>{{ row.descrp.repair_record | parseRecordStatus }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" min-width="100" label="备注" prop="descrp.comment" />
-        <el-table-column align="center" min-width="100" label="操作时间" prop="operation_time" />
 
-        <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
+        <el-table-column align="center" label="操作时间" class-name="small-padding fixed-width">
           <template slot-scope="{row}">
-            <el-button type="primary" size="small" @click="handleUpdate(row)">编辑</el-button>
+            <span>{{ row.operation_time | parseTime('{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -43,6 +37,7 @@
         <back-to-top :visibility-height="100" />
       </el-tooltip>
     </el-card>
+
   </div>
 </template>
 
@@ -65,12 +60,12 @@
 </style>
 
 <script>
-import { getAdminDetailCheckedWares } from '@/api/warehouse'
+import { getUserDetailCheckedWares } from '@/api/warehouse'
 import BackToTop from '@/components/BackToTop/index'
 import Pagination from '@/components/Pagination/index'
 
 export default {
-  name: 'AdminWarehouseDetailList',
+  name: 'WarehouseDetailList',
   components: { BackToTop, Pagination },
   filters: {
     parseRecordStatus(status) {
@@ -101,8 +96,7 @@ export default {
         page: 1,
         limit: 20,
         offset: 0,
-        sn_code: undefined,
-        product_name: undefined
+        sn_code: undefined
       },
       downloadLoading: false
     }
@@ -112,16 +106,15 @@ export default {
       this.getList()
     }
   },
-  mounted() {
+  created() {
     this.title = this.$route.query.title
     this.getList()
   },
   methods: {
     getList() {
       this.listLoading = true
-      this.listQuery.warehouse = this.$route.query.warehouse
       this.listQuery.offset = (this.listQuery.page - 1) * this.listQuery.limit
-      getAdminDetailCheckedWares(this.listQuery).then(response => {
+      getUserDetailCheckedWares(this.listQuery).then(response => {
         this.list = response.data.results
         this.total = response.data.count
         this.listLoading = false

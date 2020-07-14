@@ -17,7 +17,7 @@ class WarehouseSerializer(serializers.ModelSerializer):
 
 
 class ProductSerializer(serializers.ModelSerializer):
-    operation_time = serializers.DateTimeField(format="%Y-%m-%d", allow_null=True, required=True)
+    operation_time = serializers.DateTimeField(format="%Y-%m-%d %H:%M", allow_null=True, required=True)
     descrp = serializers.JSONField(required=True)
     sn_code = serializers.CharField(required=True)
     product_name = serializers.CharField(required=True)

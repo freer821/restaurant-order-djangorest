@@ -147,6 +147,16 @@ export const userRouterMap = [
           title: '库存列表',
           noCache: true
         }
+      },
+      {
+        path: 'product',
+        component: () => import('@/views/warehouse/product_list'),
+        name: 'productList',
+        hidden: true,
+        meta: {
+          title: '库存详情',
+          noCache: true
+        }
       }
     ]
   },
