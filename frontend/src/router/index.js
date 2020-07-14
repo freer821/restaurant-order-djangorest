@@ -192,7 +192,7 @@ export const userRouterMap = [
       },
       {
         path: 'list',
-        component: () => import('@/views/chuku/admin-list'),
+        component: () => import('@/views/chuku/list'),
         name: 'list',
         meta: {
           title: '出库列表',

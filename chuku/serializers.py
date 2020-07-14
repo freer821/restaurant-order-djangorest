@@ -26,6 +26,7 @@ class UserChukuSerializer(serializers.ModelSerializer):
         model = Chuku
         exclude = ['owner', 'updatedtime']
         extra_kwargs = {
+            'createdtime': {'read_only': True},
             'sendtime': {'read_only': True},
             'comment': {'read_only': True},
             'status': {'read_only': True}

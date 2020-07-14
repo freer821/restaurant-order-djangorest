@@ -228,6 +228,7 @@ export default {
     submitForm() {
       this.$refs.chuku.validate((valid) => {
         if (valid) {
+          delete this.chuku.createdtime
           updateUserChuku(this.chuku).then(response => {
             this.$message.success('修改成功！')
             this.$router.push({ path: '/chuku/list' })

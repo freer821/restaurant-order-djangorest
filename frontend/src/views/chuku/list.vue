@@ -184,10 +184,6 @@ export default {
     handleUpdate(row) {
       this.$router.push({ path: '/chuku/edit', query: { id: row.id }})
     },
-    showDetail(detail) {
-      this.goodsDetail = detail
-      this.detailDialogVisible = true
-    },
     handleDelete(row) {
 
     }
