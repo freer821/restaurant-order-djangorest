@@ -97,15 +97,6 @@
     <el-tooltip placement="top" content="返回顶部">
       <back-to-top :visibility-height="100" />
     </el-tooltip>
-    <el-drawer
-      :title="ware_detail_list.title"
-      :visible.sync="ware_detail_list.show"
-      direction="rtl"
-      size="70%"
-      :before-close="handleClose"
-    >
-      <AdminWarehouseDetailList :title="ware_detail_list.title" />
-    </el-drawer>
   </div>
 </template>
 
@@ -132,10 +123,9 @@ import { getAdminWarehouseList, updateAdminWarehouseList } from '@/api/warehouse
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination'
 import { mapGetters } from 'vuex' // Secondary package based on el-pagination
-import AdminWarehouseDetailList from './components/admin_waredetail_list'
 export default {
   name: 'WarehouseList',
-  components: { BackToTop, Pagination, AdminWarehouseDetailList },
+  components: { BackToTop, Pagination },
   data() {
     return {
       list: [],
@@ -236,8 +226,7 @@ export default {
       })
     },
     handleDetail(row) {
-      this.ware_detail_list.title = row.product_name
-      this.ware_detail_list.show = true
+      this.$router.push({ path: '/admin/warehouse/product', query: { warehouse: row.id }})
     },
     handleClose(done) {
       this.ware_detail_list.title = ''

@@ -323,6 +323,16 @@ export const adminRouterMap = [
           title: '检修 - 详细录入',
           noCache: true
         }
+      },
+      {
+        path: 'product',
+        component: () => import('@/views/warehouse/admin_product_list'),
+        name: 'storeAdminProduct',
+        hidden: true,
+        meta: {
+          title: '商品库存详情',
+          noCache: true
+        }
       }
     ]
   },

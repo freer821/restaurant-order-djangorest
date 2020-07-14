@@ -65,8 +65,8 @@
 
 <script>
 import { getAdminDetailCheckedWares } from '@/api/warehouse'
-import BackToTop from '@/components/BackToTop'
-import Pagination from '@/components/Pagination'
+import BackToTop from '@/components/BackToTop/index'
+import Pagination from '@/components/Pagination/index'
 
 export default {
   name: 'AdminWarehouseDetailList',
@@ -100,7 +100,8 @@ export default {
         page: 1,
         limit: 20,
         offset: 0,
-        sn_code: undefined
+        sn_code: undefined,
+        product_name: undefined
       },
       downloadLoading: false
     }
@@ -110,7 +111,7 @@ export default {
       this.getList()
     }
   },
-  created() {
+  mounted() {
     this.getList()
   },
   methods: {
@@ -118,6 +119,7 @@ export default {
       this.listLoading = true
       this.listQuery.product_name = this.title
       this.listQuery.offset = (this.listQuery.page - 1) * this.listQuery.limit
+      console.log(this.listQuery)
       getAdminDetailCheckedWares(this.listQuery).then(response => {
         this.list = response.data.results
         this.total = response.data.count

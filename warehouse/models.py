@@ -15,7 +15,8 @@ class Warehouse(models.Model):
     updatedtime = models.DateTimeField(auto_now=True)
 
 
-class WarehouseDetail(models.Model):
+class Product(models.Model):
+    warehouse = models.ForeignKey(Warehouse, related_name='product', on_delete=models.CASCADE)
     product_name = models.CharField(max_length=200, default="")
     status = models.CharField(max_length=50, default="")
     sn_code = models.CharField(max_length=50, default="")

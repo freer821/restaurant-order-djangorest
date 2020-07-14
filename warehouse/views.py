@@ -60,13 +60,13 @@ class AdminWarehouseViewSet(mixins.ListModelMixin,
         return Response(getStandardResponse(200))
 
 
-class AdminWarehouseDetailViewSet(viewsets.ModelViewSet):
-    queryset = WarehouseDetail.objects.all()
-    serializer_class = WarehouseDetailSerializer
+class AdminProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAdminUser,]
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filterset_fields = ['product_name', 'sn_code']
+    filterset_fields = ['warehouse', 'product_name', 'sn_code']
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
@@ -89,7 +89,7 @@ class AdminWarehouseDetailViewSet(viewsets.ModelViewSet):
         warehouse.unknown_num -= 1
         warehouse.save()
 
-        return super(AdminWarehouseDetailViewSet, self).create(request, args, kwargs)
+        return super(AdminProductViewSet, self).create(request, args, kwargs)
 
 
 class UserWarehouseViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
@@ -104,9 +104,9 @@ class UserWarehouseViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
         return self.queryset.filter(owner=self.request.user).order_by('-updatedtime')
 
 
-class UserWarehouseDetailViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
-    queryset = WarehouseDetail.objects.all()
-    serializer_class = WarehouseDetailSerializer
+class UserProductViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     filter_backends = [django_filters.rest_framework.DjangoFilterBackend]

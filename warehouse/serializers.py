@@ -14,7 +14,7 @@ class WarehouseSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class WarehouseDetailSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     operation_time = serializers.DateTimeField(format="%Y-%m-%d", allow_null=True, required=True)
     descrp = serializers.JSONField(required=True)
     sn_code = serializers.CharField(required=True)
@@ -22,13 +22,13 @@ class WarehouseDetailSerializer(serializers.ModelSerializer):
     status = serializers.CharField(required=True)
 
     class Meta:
-        model = WarehouseDetail
+        model = Product
         fields = '__all__'
 
-    def to_representation(self, instance: WarehouseDetail):
+    def to_representation(self, instance: Product):
         instance.descrp = json.loads(instance.descrp)
-        return super(WarehouseDetailSerializer, self).to_representation(instance)
+        return super(ProductSerializer, self).to_representation(instance)
 
     def to_internal_value(self, data):
         data['descrp'] = json.dumps(data['descrp'])
-        return super(WarehouseDetailSerializer, self).to_internal_value(data)
+        return super(ProductSerializer, self).to_internal_value(data)
