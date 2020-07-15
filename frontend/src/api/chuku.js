@@ -31,6 +31,13 @@ export function updateUserChuku(data) {
   })
 }
 
+export function delUserChuku(id) {
+  return request({
+    url: '/api/chuku/' + id + '/',
+    method: 'DELETE'
+  })
+}
+
 export function listAdminChuku(params) {
   return request({
     url: '/api/admin/chuku/',

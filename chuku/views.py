@@ -38,7 +38,15 @@ class UserChukuViewSet(viewsets.ModelViewSet):
             return Response(getStandardResponse(400, '产品未找到，请检查录入商品名是否正确'))
 
         return super(UserChukuViewSet, self).update(request, args, kwargs)
+    
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if instance.status != 'created':
+            return Response(getStandardResponse(400, '已处理中，不能删除，请联系管理员'))
 
+        return super(UserChukuViewSet, self).destroy(request, args, kwargs)
+        
+        
 class AdminChukuViewSet(viewsets.ModelViewSet):
     queryset = Chuku.objects.all()
     serializer_class = AdminChukuSerializer

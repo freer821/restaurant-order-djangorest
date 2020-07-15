@@ -73,8 +73,8 @@
 
       <el-table-column align="center" label="操作" width="200" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
-          <el-button v-show="!scope.row.arrivedtime" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button v-show="scope.row.status==='created'" type="primary" size="mini" @click="handleUpdate(scope.row)">编辑</el-button>
+          <el-button v-show="scope.row.status==='created'" type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -113,7 +113,7 @@
 </style>
 
 <script>
-import { listUserChuku } from '@/api/chuku'
+import { listUserChuku, delUserChuku } from '@/api/chuku'
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
@@ -124,8 +124,8 @@ export default {
     parseStatus(status) {
       const statusMap = {
         created: '已创建',
-        error0: '划痕',
-        error1: '故障'
+        handled: '处理中',
+        finished: '完成'
       }
       return statusMap[status]
     },
@@ -185,7 +185,11 @@ export default {
       this.$router.push({ path: '/chuku/edit', query: { id: row.id }})
     },
     handleDelete(row) {
-
+      delUserChuku(row.id).then(repsonse => {
+        this.$message.success('删除成功！')
+      }).catch(err => {
+        this.$message.error('删除失败！' + JSON.stringify(err))
+      })
     }
   }
 }

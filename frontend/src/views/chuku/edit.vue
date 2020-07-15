@@ -242,7 +242,7 @@ export default {
       })
     },
     resetForm() {
-      this.chuku = this.origin_chuku
+      this.chuku = Object.assign({}, this.origin_chuku)
     }
   }
 }

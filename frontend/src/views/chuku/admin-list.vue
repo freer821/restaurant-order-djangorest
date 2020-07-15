@@ -10,7 +10,16 @@
     </div>
 
     <!-- 查询结果 -->
-    <el-table v-loading="listLoading" :data="list" element-loading-text="正在查询中。。。" border fit highlight-current-row :row-class-name="tableRowClassName">
+    <el-table
+      v-loading="listLoading"
+      :data="list"
+      element-loading-text="正在查询中。。。"
+      border
+      fit
+      highlight-current-row
+      :row-class-name="tableRowClassName"
+      @selection-change="handleSelectionChange"
+    >
 
       <el-table-column type="expand">
         <template slot-scope="props">
@@ -50,6 +59,7 @@
           </el-form>
         </template>
       </el-table-column>
+      <el-table-column type="selection" align="center" />
 
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="{row}">
