@@ -7,6 +7,7 @@
       <el-input v-model="listQuery.logistic_code" clearable class="filter-item" style="width: 160px;" placeholder="请输入快递单号" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">查找</el-button>
       <el-button class="filter-item" type="primary" icon="el-icon-edit" @click="handleCreate">添加</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-document" @click="handleDHLExcel(multipleSelection)">导出DHL</el-button>
     </div>
 
     <!-- 查询结果 -->
@@ -166,7 +167,11 @@ export default {
         product_name: undefined,
         logistic_code: undefined
       },
-      downloadLoading: false
+      downloadLoading: false,
+      multipleSelection: [],
+      tableHeader: ['Dingdanhao', 'Name 1', 'Name 2, Postnummer', 'Name 3', 'Emp.Tel', 'Street', 'Nr.', 'country', 'PLZ',
+        'City', 'fd', 'Gewicht', 'No. of Floor or Appartment', 'Mark2', 'Mark3', 'ShipperName', 'ShipperCompany', 'ShipperAddress', 'Menpai',
+        'ShipperZipCode', 'ShipperCity', 'Rg.Nr', 'Service']
     }
   },
   computed: {
@@ -231,6 +236,52 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+    handleDHLExcel() {
+      if (this.multipleSelection.length === 0) {
+        this.$message.error('请选择至少一条记录')
+      } else {
+        import('@/vendor/Export2Excel').then(excel => {
+          const filterVal = ['Dingdanhao', 'reciever_name', 'name2', 'reciever_extra', 'reciever_tel', 'reciever_addr',
+            'reciever_housenr', 'reciever_country', 'reciever_postcode', 'reciever_city',
+            'fd', 'weight', 'Floor', 'Mark2', 'Mark3', 'ShipperName', 'ShipperCompany', 'ShipperAddress', 'Menpai',
+            'ShipperZipCode', 'ShipperCity', 'Rg_Nr', 'Service']
+          const chuku_arr = []
+          for (let i = 0; i < this.multipleSelection.length; i++) {
+            const selected_chuku = this.multipleSelection[i]
+            const chuku = {
+              Dingdanhao: '',
+              reciever_name: selected_chuku.reciever.name,
+              name2: selected_chuku.reciever.name,
+              reciever_extra: selected_chuku.reciever.extra,
+              reciever_tel: selected_chuku.reciever.tel,
+              reciever_addr: selected_chuku.reciever.addr,
+              reciever_housenr: selected_chuku.reciever.housenr,
+              reciever_country: selected_chuku.reciever.country,
+              reciever_postcode: selected_chuku.reciever.postcode,
+              reciever_city: selected_chuku.reciever.city,
+              fd: '',
+              weight: selected_chuku.weight,
+              Floor: '',
+              Mark2: '',
+              Mark3: '',
+              ShipperName: 'Dongliang',
+              ShipperCompany: 'i.A.v. Team C',
+              ShipperAddress: 'Waldstr',
+              Menpai: '23/D7',
+              ShipperZipCode: '63128',
+              ShipperCity: 'Dietzenbach',
+              Rg_Nr: '',
+              Service: ''
+            }
+            chuku_arr.push(chuku)
+          }
+          excel.export_json_to_excel2(this.tableHeader, chuku_arr, filterVal, 'DHL模板')
+        })
+      }
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
     }
   }
 }

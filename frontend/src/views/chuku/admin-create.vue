@@ -90,8 +90,11 @@
         <el-form-item label="公司名称/包裹站编码">
           <el-input v-model="chuku.reciever.company" />
         </el-form-item>
-        <el-form-item label="街道名 街道号">
+        <el-form-item label="街道">
           <el-input v-model="chuku.reciever.addr" />
+        </el-form-item>
+        <el-form-item label="门牌号">
+          <el-input v-model="chuku.reciever.housenr" />
         </el-form-item>
         <el-form-item label="城市">
           <el-input v-model="chuku.reciever.city" />
@@ -181,6 +184,7 @@ export default {
           company: '',
           tel: '',
           addr: '',
+          housenr: '',
           city: '',
           provice: '',
           postcode: '',
