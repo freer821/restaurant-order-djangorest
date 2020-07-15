@@ -119,7 +119,6 @@ def dashboard(request):
         data['chuku_forecast_num'] = Chuku.objects.filter(owner=request.user, sendtime__isnull=True).aggregate(Sum('num')).get('num__sum', '0')
         data['chuku_num'] = Chuku.objects.filter(owner=request.user, sendtime__isnull=False).aggregate(Sum('num')).get('num__sum', '0')
 
-    print(data)
     return Response(getStandardResponse(200, '', data))
 
 

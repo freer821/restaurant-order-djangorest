@@ -193,7 +193,7 @@ export const userRouterMap = [
       {
         path: 'list',
         component: () => import('@/views/chuku/list'),
-        name: 'list',
+        name: 'chukuList',
         meta: {
           title: '出库列表',
           noCache: true
@@ -259,7 +259,7 @@ export const adminRouterMap = [
       {
         path: 'list',
         component: () => import('@/views/forecast/admin_list'),
-        name: 'forecastAdminList',
+        name: 'forecastList',
         meta: {
           title: '预报列表',
           noCache: true
@@ -309,7 +309,7 @@ export const adminRouterMap = [
       {
         path: 'list',
         component: () => import('@/views/warehouse/admin_list'),
-        name: 'storeAdminList',
+        name: 'storeList',
         meta: {
           title: '库存列表',
           noCache: true
@@ -379,7 +379,7 @@ export const adminRouterMap = [
       {
         path: 'list',
         component: () => import('@/views/chuku/admin-list'),
-        name: 'list',
+        name: 'chukuList',
         meta: {
           title: '出库列表',
           noCache: true

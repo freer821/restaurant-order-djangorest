@@ -4,7 +4,7 @@
     <el-row :gutter="40" class="panel-group">
       <el-col :span="12" class="card-panel-col">
         <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-people">
+          <div class="card-panel-icon-wrapper icon-people" @click="gotolink('forecastList')">
             <svg-icon icon-class="peoples" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
@@ -15,7 +15,7 @@
       </el-col>
       <el-col :span="12" class="card-panel-col">
         <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-message">
+          <div class="card-panel-icon-wrapper icon-message" @click="gotolink('forecastList')">
             <svg-icon icon-class="message" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
@@ -28,7 +28,7 @@
     <el-row :gutter="40" class="panel-group">
       <el-col :span="12" class="card-panel-col">
         <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-money">
+          <div class="card-panel-icon-wrapper icon-money" @click="gotolink('storeList')">
             <svg-icon icon-class="message" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
@@ -39,7 +39,7 @@
       </el-col>
       <el-col :span="12" class="card-panel-col">
         <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-shoppingCard">
+          <div class="card-panel-icon-wrapper icon-shoppingCard" @click="gotolink('storeList')">
             <svg-icon icon-class="money" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
@@ -52,7 +52,7 @@
     <el-row :gutter="40" class="panel-group">
       <el-col :span="12" class="card-panel-col">
         <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-money">
+          <div class="card-panel-icon-wrapper icon-money" @click="gotolink('chukuList')">
             <svg-icon icon-class="message" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
@@ -63,7 +63,7 @@
       </el-col>
       <el-col :span="12" class="card-panel-col">
         <div class="card-panel">
-          <div class="card-panel-icon-wrapper icon-shoppingCard">
+          <div class="card-panel-icon-wrapper icon-shoppingCard" @click="gotolink('chukuList')">
             <svg-icon icon-class="money" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
@@ -123,6 +123,9 @@ export default {
       }).catch(err => {
         this.$message.error(err.msg)
       })
+    },
+    gotolink(name) {
+      this.$router.push({ name: name })
     }
   }
 }
