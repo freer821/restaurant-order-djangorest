@@ -1,6 +1,7 @@
 import django_filters
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import update_last_login
+from django.db.models import Sum, F
 from rest_framework import generics, viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
@@ -9,9 +10,12 @@ from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
+from chuku.models import Chuku
 from common.utils import getRandomNo
 from config.middleware import getStandardResponse
 from config.permissions import IsOwner
+from ruku.models import Forecast
+from warehouse.models import Warehouse
 from .serializers import *
 from .services import sendNewPassw, activate_user_handle
 
@@ -76,6 +80,29 @@ def activateuser(request):
         return Response(getStandardResponse(200, 'user activated successfully'))
 
     return Response(getStandardResponse(200, 'failed!'))
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def dashboard(request):
+    data = {}
+    if request.user.is_superuser:
+        data['forecast_num'] = Forecast.objects.all().aggregate(Sum('expected_num')).get('expected_num__sum', '0')
+        data['ruku_num'] = Forecast.objects.all().aggregate(Sum('real_num')).get('real_num__sum', '0')
+        data['product_good_num'] = Warehouse.objects.all().aggregate(Sum('normal_num')).get('normal_num__sum', '0')
+        data['product_ungood_num'] = Warehouse.objects.all().aggregate(product_ungood_num = Sum(F('error0_num')+F('error1_num'))).get('product_ungood_num', '0')
+        data['chuku_forecast_num'] = Chuku.objects.filter(sendtime__isnull=True).aggregate(Sum('num')).get('num__sum', '0')
+        data['chuku_num'] = Chuku.objects.filter(sendtime__isnull=False).aggregate(Sum('num')).get('num__sum', '0')
+    else:
+        data['forecast_num'] = Forecast.objects.filter(owner=request.user).aggregate(Sum('expected_num')).get('expected_num__sum', '0')
+        data['ruku_num'] = Forecast.objects.filter(owner=request.user).aggregate(Sum('real_num')).get('real_num__sum', '0')
+        data['product_good_num'] = Warehouse.objects.filter(owner=request.user).aggregate(Sum('normal_num')).get('normal_num__sum', '0')
+        data['product_ungood_num'] = Warehouse.objects.filter(owner=request.user).aggregate(product_ungood_num= Sum(F('error0_num')+F('error1_num'))).get('product_ungood_num', '0')
+        data['chuku_forecast_num'] = Chuku.objects.filter(owner=request.user, sendtime__isnull=True).aggregate(Sum('num')).get('num__sum', '0')
+        data['chuku_num'] = Chuku.objects.filter(owner=request.user, sendtime__isnull=False).aggregate(Sum('num')).get('num__sum', '0')
+
+    print(data)
+    return Response(getStandardResponse(200, '', data))
 
 
 class UserRetrieveUpdateView(generics.RetrieveUpdateAPIView):

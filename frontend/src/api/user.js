@@ -2,14 +2,14 @@ import request from '@/utils/request'
 
 export function getUserInfo() {
   return request({
-    url: '/user/profile',
+    url: '/api/user/profile',
     method: 'get'
   })
 }
 
 export function updateUserInfo(data) {
   return request({
-    url: '/user/profile',
+    url: '/api/user/profile',
     method: 'put',
     data
   })
@@ -17,15 +17,22 @@ export function updateUserInfo(data) {
 
 export function getAllUsers() {
   return request({
-    url: 'admin/users/',
+    url: 'api/admin/users/',
     method: 'get'
   })
 }
 
 export function fetchUserListAdmin(params) {
   return request({
-    url: 'admin/users/',
+    url: 'api/admin/users/',
     method: 'get',
     params
+  })
+}
+
+export function fetchDashboadInfo() {
+  return request({
+    url: 'api/dashboard',
+    method: 'get'
   })
 }

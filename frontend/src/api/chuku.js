@@ -10,7 +10,7 @@ export function createUserChuku(data) {
 
 export function listUserChuku(params) {
   return request({
-    url: '/chuku/',
+    url: '/api/chuku/',
     method: 'get',
     params
   })
@@ -18,14 +18,14 @@ export function listUserChuku(params) {
 
 export function getUserChuku(id) {
   return request({
-    url: '/chuku/' + id,
+    url: '/api/chuku/' + id,
     method: 'get'
   })
 }
 
 export function updateUserChuku(data) {
   return request({
-    url: '/chuku/' + data.id + '/',
+    url: '/api/chuku/' + data.id + '/',
     method: 'put',
     data
   })
@@ -33,7 +33,7 @@ export function updateUserChuku(data) {
 
 export function listAdminChuku(params) {
   return request({
-    url: '/admin/chuku/',
+    url: '/api/admin/chuku/',
     method: 'get',
     params
   })
@@ -41,7 +41,7 @@ export function listAdminChuku(params) {
 
 export function createAdminChuku(data) {
   return request({
-    url: '/admin/chuku/',
+    url: '/api/admin/chuku/',
     method: 'post',
     data
   })
@@ -49,7 +49,7 @@ export function createAdminChuku(data) {
 
 export function getAdminChuku(id) {
   return request({
-    url: '/admin/chuku/' + id,
+    url: '/api/admin/chuku/' + id,
     method: 'get'
   })
 }
@@ -57,7 +57,7 @@ export function getAdminChuku(id) {
 export function updateAdminChuku(data) {
   console.log(data)
   return request({
-    url: '/admin/chuku/' + data.id + '/',
+    url: '/api/admin/chuku/' + data.id + '/',
     method: 'put',
     data
   })
@@ -65,7 +65,7 @@ export function updateAdminChuku(data) {
 
 export function delAdminChuku(id) {
   return request({
-    url: '/admin/chuku/' + id + '/',
+    url: '/api/admin/chuku/' + id + '/',
     method: 'DELETE'
   })
 }

@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getAdminWarehouseList(params) {
   return request({
-    url: '/admin/warehouse/',
+    url: '/api/admin/warehouse/',
     method: 'get',
     params
   })
@@ -10,7 +10,7 @@ export function getAdminWarehouseList(params) {
 
 export function updateAdminWarehouseList(data) {
   return request({
-    url: '/admin/warehouse/' + data.id + '/',
+    url: '/api/admin/warehouse/' + data.id + '/',
     method: 'put',
     data
   })
@@ -18,7 +18,7 @@ export function updateAdminWarehouseList(data) {
 
 export function pushMassivCheckedWares(data) {
   return request({
-    url: '/admin/warehouse/massiv_check_handle/?current_user=2',
+    url: '/api/admin/warehouse/massiv_check_handle/?current_user=2',
     method: 'post',
     data
   })
@@ -26,7 +26,7 @@ export function pushMassivCheckedWares(data) {
 
 export function pushDetailCheckedWares(data) {
   return request({
-    url: '/admin/product/',
+    url: '/api/admin/product/',
     method: 'post',
     data
   })
@@ -34,7 +34,7 @@ export function pushDetailCheckedWares(data) {
 
 export function getAdminDetailCheckedWares(params) {
   return request({
-    url: '/admin/product/',
+    url: '/api/admin/product/',
     method: 'get',
     params
   })
@@ -42,14 +42,14 @@ export function getAdminDetailCheckedWares(params) {
 
 export function getDetailCheckedWare(id) {
   return request({
-    url: '/admin/product/' + id,
+    url: '/api/admin/product/' + id,
     method: 'get'
   })
 }
 
 export function editDetailCheckedWare(data) {
   return request({
-    url: '/admin/product/' + data.id + '/',
+    url: '/api/admin/product/' + data.id + '/',
     method: 'put',
     data
   })
@@ -57,7 +57,7 @@ export function editDetailCheckedWare(data) {
 
 export function getUserWarehouseList(params) {
   return request({
-    url: '/warehouse/',
+    url: '/api/warehouse/',
     method: 'get',
     params
   })
@@ -65,7 +65,7 @@ export function getUserWarehouseList(params) {
 
 export function getUserDetailCheckedWares(params) {
   return request({
-    url: '/product/',
+    url: '/api/product/',
     method: 'get',
     params
   })

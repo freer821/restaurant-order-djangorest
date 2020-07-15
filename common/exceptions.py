@@ -1,18 +1,10 @@
-from rest_framework.views import exception_handler
+from rest_framework.response import Response
 
 from config.middleware import getStandardResponse
-
-import logging
-logger = logging.getLogger(__name__)
+from .utils import logger
 
 def whs_exception_handler(exc, context):
     # Call REST framework's default exception handler first,
     # to get the standard error response.
-    response = exception_handler(exc, context)
-
-    # Now add the HTTP status code to the response.
-    if response is not None:
-        logger.error(response.data)
-        response.data = getStandardResponse(500, '', response.data)
-
-    return response
+    logger.error(exc)
+    return Response(getStandardResponse(500, '系统出错，请联系客服！'))

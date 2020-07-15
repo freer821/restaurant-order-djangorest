@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function addForecast(data) {
   return request({
-    url: '/forecasts/',
+    url: '/api/forecasts/',
     method: 'post',
     data
   })
@@ -10,7 +10,7 @@ export function addForecast(data) {
 
 export function listForecasts(params) {
   return request({
-    url: '/forecasts/',
+    url: '/api/forecasts/',
     method: 'get',
     params
   })
@@ -18,14 +18,14 @@ export function listForecasts(params) {
 
 export function getForecast(id) {
   return request({
-    url: '/forecasts/' + id,
+    url: '/api/forecasts/' + id,
     method: 'get'
   })
 }
 
 export function editForecast(data) {
   return request({
-    url: '/forecasts/' + data.id + '/',
+    url: '/api/forecasts/' + data.id + '/',
     method: 'put',
     data
   })
@@ -33,14 +33,14 @@ export function editForecast(data) {
 
 export function delForecast(id) {
   return request({
-    url: '/forecasts/' + id + '/',
+    url: '/api/forecasts/' + id + '/',
     method: 'DELETE'
   })
 }
 
 export function listAdminForecasts(params) {
   return request({
-    url: '/admin/forecasts/',
+    url: '/api/admin/forecasts/',
     method: 'get',
     params
   })
@@ -48,7 +48,7 @@ export function listAdminForecasts(params) {
 
 export function rukuForecast(data, current_user) {
   return request({
-    url: '/admin/forecasts/ruku_handle/?current_user=' + current_user,
+    url: '/api/admin/forecasts/ruku_handle/?current_user=' + current_user,
     method: 'post',
     data
   })
@@ -56,14 +56,14 @@ export function rukuForecast(data, current_user) {
 
 export function getForecastAdmin(id) {
   return request({
-    url: '/admin/forecasts/' + id,
+    url: '/api/admin/forecasts/' + id,
     method: 'get'
   })
 }
 
 export function updateForecastAdmin(data) {
   return request({
-    url: '/admin/forecasts/' + data.id + '/',
+    url: '/api/admin/forecasts/' + data.id + '/',
     method: 'put',
     data
   })
@@ -71,7 +71,7 @@ export function updateForecastAdmin(data) {
 
 export function createForecastAdmin(data) {
   return request({
-    url: '/admin/forecasts/',
+    url: '/api/admin/forecasts/',
     method: 'post',
     data
   })

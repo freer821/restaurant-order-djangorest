@@ -6,7 +6,7 @@ export function loginByUsername(username, password) {
     password
   }
   return request({
-    url: '/login',
+    url: '/api/login',
     method: 'post',
     data
   })
@@ -14,14 +14,14 @@ export function loginByUsername(username, password) {
 
 export function logout() {
   return request({
-    url: '/logout',
+    url: '/api/logout',
     method: 'get'
   })
 }
 
 export function register(data) {
   return request({
-    url: '/regist',
+    url: '/api/regist',
     method: 'post',
     data
   })
@@ -29,7 +29,7 @@ export function register(data) {
 
 export function resetpassword(data) {
   return request({
-    url: '/resetpassword',
+    url: '/api/resetpassword',
     method: 'post',
     data
   })

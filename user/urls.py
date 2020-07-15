@@ -15,6 +15,7 @@ urlpatterns = [
     path('logout', logout),
     path('resetpassword', resetpassword),
     path('activateuser', activateuser),
+    path('dashboard', dashboard),
 
     path('user/profile', UserRetrieveUpdateView.as_view()),
     path('user/changepassword', ChangePasswordView.as_view()),
