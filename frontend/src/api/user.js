@@ -30,9 +30,10 @@ export function fetchUserListAdmin(params) {
   })
 }
 
-export function fetchDashboadInfo() {
+export function fetchDashboadInfo(params) {
   return request({
     url: 'api/dashboard',
-    method: 'get'
+    method: 'get',
+    params
   })
 }

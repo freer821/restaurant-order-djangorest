@@ -79,6 +79,7 @@
 <script>
 import { fetchDashboadInfo } from '@/api/user'
 import CountTo from 'vue-count-to'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -94,21 +95,34 @@ export default {
       chuku_num: 0
     }
   },
+  computed: {
+    ...mapGetters([
+      'current_user'
+    ])
+  },
+  watch: {
+    current_user: function(val) {
+      this.getDashboadInfo()
+    }
+  },
   created() {
-    fetchDashboadInfo().then(response => {
-      this.forecast_num = response.data.forecast_num
-      this.ruku_num = response.data.ruku_num
-      this.product_good_num = response.data.product_good_num
-      this.product_ungood_num = response.data.product_ungood_num
-      this.chuku_forecast_num = response.data.chuku_forecast_num
-      this.chuku_num = response.data.chuku_num
-    }).catch(err => {
-      this.$message.error(err.msg)
-    })
+    this.getDashboadInfo()
   },
   methods: {
-    handleSetLineChartData(type) {
-      this.$emit('handleSetLineChartData', type)
+    getDashboadInfo() {
+      const params = {
+        user: this.current_user === 'all' ? undefined : this.current_user
+      }
+      fetchDashboadInfo(params).then(response => {
+        this.forecast_num = response.data.forecast_num
+        this.ruku_num = response.data.ruku_num
+        this.product_good_num = response.data.product_good_num
+        this.product_ungood_num = response.data.product_ungood_num
+        this.chuku_forecast_num = response.data.chuku_forecast_num
+        this.chuku_num = response.data.chuku_num
+      }).catch(err => {
+        this.$message.error(err.msg)
+      })
     }
   }
 }

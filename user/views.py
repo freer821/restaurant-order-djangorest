@@ -87,12 +87,30 @@ def activateuser(request):
 def dashboard(request):
     data = {}
     if request.user.is_superuser:
-        data['forecast_num'] = Forecast.objects.all().aggregate(Sum('expected_num')).get('expected_num__sum', '0')
-        data['ruku_num'] = Forecast.objects.all().aggregate(Sum('real_num')).get('real_num__sum', '0')
-        data['product_good_num'] = Warehouse.objects.all().aggregate(Sum('normal_num')).get('normal_num__sum', '0')
-        data['product_ungood_num'] = Warehouse.objects.all().aggregate(product_ungood_num = Sum(F('error0_num')+F('error1_num'))).get('product_ungood_num', '0')
-        data['chuku_forecast_num'] = Chuku.objects.filter(sendtime__isnull=True).aggregate(Sum('num')).get('num__sum', '0')
-        data['chuku_num'] = Chuku.objects.filter(sendtime__isnull=False).aggregate(Sum('num')).get('num__sum', '0')
+        user = request.GET.get('user','')
+        if user:
+            data['forecast_num'] = Forecast.objects.filter(owner__id=user).aggregate(Sum('expected_num')).get(
+                'expected_num__sum', '0')
+            data['ruku_num'] = Forecast.objects.filter(owner__id=user).aggregate(Sum('real_num')).get(
+                'real_num__sum', '0')
+            data['product_good_num'] = Warehouse.objects.filter(owner__id=user).aggregate(Sum('normal_num')).get(
+                'normal_num__sum', '0')
+            data['product_ungood_num'] = Warehouse.objects.filter(owner__id=user).aggregate(
+                product_ungood_num=Sum(F('error0_num') + F('error1_num'))).get('product_ungood_num', '0')
+            data['chuku_forecast_num'] = Chuku.objects.filter(owner__id=user, sendtime__isnull=True).aggregate(
+                Sum('num')).get('num__sum', '0')
+            data['chuku_num'] = Chuku.objects.filter(owner__id=user, sendtime__isnull=False).aggregate(
+                Sum('num')).get('num__sum', '0')
+        else:
+            data['forecast_num'] = Forecast.objects.all().aggregate(Sum('expected_num')).get('expected_num__sum', '0')
+            data['ruku_num'] = Forecast.objects.all().aggregate(Sum('real_num')).get('real_num__sum', '0')
+            data['product_good_num'] = Warehouse.objects.all().aggregate(Sum('normal_num')).get('normal_num__sum', '0')
+            data['product_ungood_num'] = Warehouse.objects.all().aggregate(
+                product_ungood_num=Sum(F('error0_num') + F('error1_num'))).get('product_ungood_num', '0')
+            data['chuku_forecast_num'] = Chuku.objects.filter(sendtime__isnull=True).aggregate(Sum('num')).get(
+                'num__sum', '0')
+            data['chuku_num'] = Chuku.objects.filter(sendtime__isnull=False).aggregate(Sum('num')).get('num__sum', '0')
+
     else:
         data['forecast_num'] = Forecast.objects.filter(owner=request.user).aggregate(Sum('expected_num')).get('expected_num__sum', '0')
         data['ruku_num'] = Forecast.objects.filter(owner=request.user).aggregate(Sum('real_num')).get('real_num__sum', '0')
