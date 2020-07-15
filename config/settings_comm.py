@@ -64,7 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'config.middleware.ResponseCustomMiddleware'
+    'config.middleware.WHSRequestResponseMiddleware'
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -142,6 +142,47 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'assets')
 
 
 # App default configurations
+LOGGING_ROOT = os.path.join(BASE_DIR, 'resource', 'logs')
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{asctime} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'fileInfo': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGGING_ROOT, "info.log"),
+            'maxBytes': 1024*1024*5, # 5 MB
+            'backupCount': 5,
+            'formatter': 'simple'
+        },
+        'fileError': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(LOGGING_ROOT, "error.log"),
+            'maxBytes': 1024*1024*5, # 5 MB
+            'backupCount': 5,
+            'formatter': 'verbose'
+        },
+    },
+    'loggers': {
+        'whs': {
+            'handlers': ['fileError', 'fileInfo'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
+
 IS_SEND_REGIST_MAIL = True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
