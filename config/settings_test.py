@@ -11,7 +11,7 @@ DATABASES = {
         'NAME': 'whs_db',
         'USER': 'root',
         'PASSWORD': 'qwer1234@',
-        'HOST': '127.0.0.1',
+        'HOST': 'ub-mariadb',
         'PORT': '3306',
         'ATOMIC_REQUESTS': True,
         'OPTIONS': {

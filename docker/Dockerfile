@@ -1,8 +1,14 @@
-FROM tiangolo/uwsgi-nginx:python3.8
-ENV LANG en_US.UTF-8 \
+FROM python:3.8-alpine
+
+ENV LANG en_US.UTF-8 
 ENV TERM=xterm \
     TZ=Europe/Berlin \
-    DEBIAN_FRONTEND=noninteractive \
+    DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+    apt-get upgrade -y && \ 	
+    apt-get install -y \
+    locales
 
 # install chinese
 RUN locale-gen en_US.UTF-8
