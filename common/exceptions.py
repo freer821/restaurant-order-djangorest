@@ -15,8 +15,6 @@ def whs_exception_handler(exc, context):
         exc = exceptions.NotFound()
     elif isinstance(exc, PermissionDenied):
         exc = exceptions.PermissionDenied()
-    elif not isinstance(exc, WHSException):
-        exc = Exception('系统出错，请联系客服')
 
     logger.error(str(exc))
     return Response(getStandardResponse(500, str(exc)))

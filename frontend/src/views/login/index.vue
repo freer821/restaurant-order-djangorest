@@ -53,12 +53,18 @@
           <span>
             <el-link type="warning" @click="passwordForgottenDialog=true">忘记密码</el-link>
           </span>
+          <span>
+            <el-link type="danger" @click="activateUserDialog=true">激活账户</el-link>
+          </span>
         </div>
         <el-button class="thirdparty-button" type="danger" @click="rigisterDialog=true">会员注册</el-button>
       </div>
     </el-form>
     <el-dialog title="忘记密码?" :visible.sync="passwordForgottenDialog">
       <password-forgotten @eventCloseDialog="closeDialog" />
+    </el-dialog>
+    <el-dialog title="账户激活" :visible.sync="activateUserDialog">
+      <activateuser @eventCloseDialog="closeDialog" />
     </el-dialog>
     <el-dialog title="会员注册" :visible.sync="rigisterDialog">
       <register @eventCloseDialog="closeDialog" />
@@ -70,10 +76,11 @@
 <script>
 import PasswordForgotten from './components/passwordforgotten'
 import Register from './components/register'
+import Activateuser from '@/views/login/components/activateuser'
 
 export default {
   name: 'Login',
-  components: { PasswordForgotten, Register },
+  components: { PasswordForgotten, Register, Activateuser },
   data() {
     const validatePassword = (rule, value, callback) => {
       if (value.length < 3) {
@@ -100,6 +107,7 @@ export default {
       passwordType: 'password',
       loading: false,
       passwordForgottenDialog: false,
+      activateUserDialog: false,
       rigisterDialog: false,
       form: {
         name: '',

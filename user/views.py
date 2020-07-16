@@ -74,12 +74,12 @@ def resetpassword(request):
 
 @api_view(["GET"])
 def activateuser(request):
-    activate_code = request.GET.get('activate_code', '')
+    activate_code = request.GET.get('activecode', '')
     if len(activate_code) > 0:
         activate_user_handle(activate_code)
         return Response(getStandardResponse(200, 'user activated successfully'))
 
-    return Response(getStandardResponse(200, 'failed!'))
+    return Response(getStandardResponse(500, 'user activated failed!'))
 
 
 @api_view(["GET"])

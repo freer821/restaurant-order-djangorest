@@ -13,4 +13,4 @@ DATABASES = {
     }
 }
 
-IS_SEND_REGIST_MAIL = False
+#IS_SEND_REGIST_MAIL = True

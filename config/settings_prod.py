@@ -1,7 +1,7 @@
 from .settings_comm import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
-ALLOWED_HOSTS = ['127.0.0.1', '192.168.178.78']
+ALLOWED_HOSTS = ['dk.ubonex.eu']
 
 DATABASES = {
     'default': {
@@ -9,7 +9,7 @@ DATABASES = {
         'NAME': 'whs_db',
         'USER': 'root',
         'PASSWORD': 'qwer1234@',
-        'HOST': '127.0.0.1',
+        'HOST': 'ub-mariadb',
         'PORT': '3306',
         'ATOMIC_REQUESTS': True,
         'OPTIONS': {
