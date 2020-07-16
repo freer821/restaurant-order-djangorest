@@ -3,7 +3,7 @@ from .settings_comm import *
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', '192.168.178.78']
+ALLOWED_HOSTS = ['127.0.0.1', '192.168.56.102']
 
 DATABASES = {
     'default': {
