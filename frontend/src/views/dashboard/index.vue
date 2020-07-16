@@ -5,7 +5,7 @@
       <el-col :span="12" class="card-panel-col">
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-people" @click="gotolink('forecastList')">
-            <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+            <svg-icon icon-class="guide" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">预报入库数量</div>
@@ -16,7 +16,7 @@
       <el-col :span="12" class="card-panel-col">
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-message" @click="gotolink('forecastList')">
-            <svg-icon icon-class="message" class-name="card-panel-icon" />
+            <svg-icon icon-class="guide" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">已入库数量</div>
@@ -29,7 +29,7 @@
       <el-col :span="12" class="card-panel-col">
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-money" @click="gotolink('storeList')">
-            <svg-icon icon-class="message" class-name="card-panel-icon" />
+            <svg-icon icon-class="chart" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">库存良品总数</div>
@@ -40,7 +40,7 @@
       <el-col :span="12" class="card-panel-col">
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-shoppingCard" @click="gotolink('storeList')">
-            <svg-icon icon-class="money" class-name="card-panel-icon" />
+            <svg-icon icon-class="chart" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">库存废品总数</div>
@@ -53,7 +53,7 @@
       <el-col :span="12" class="card-panel-col">
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-money" @click="gotolink('chukuList')">
-            <svg-icon icon-class="message" class-name="card-panel-icon" />
+            <svg-icon icon-class="shopping" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">出库预报数量</div>
@@ -64,7 +64,7 @@
       <el-col :span="12" class="card-panel-col">
         <div class="card-panel">
           <div class="card-panel-icon-wrapper icon-shoppingCard" @click="gotolink('chukuList')">
-            <svg-icon icon-class="money" class-name="card-panel-icon" />
+            <svg-icon icon-class="shopping" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
             <div class="card-panel-text">已出库数量</div>

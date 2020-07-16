@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
+from common.exceptions import WHSException
 from warehouse.models import Warehouse
 
 
@@ -24,5 +25,5 @@ def changeWareIntoWarehous(user, product_name, num_diff):
         warehouse.unknown_num += num_diff
         warehouse.save()
     else:
-        raise Exception('changeWareIntoWarehous: '+ product_name + 'not found!')
+        raise WHSException('changeWareIntoWarehous: '+ product_name + 'not found!')
 

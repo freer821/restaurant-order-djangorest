@@ -6,6 +6,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from chuku.apps import statusChangedChuku
 from chuku.models import Chuku
 from chuku.serializers import UserChukuSerializer, AdminChukuSerializer
 from config.middleware import getStandardResponse
@@ -71,6 +72,9 @@ class AdminChukuViewSet(viewsets.ModelViewSet):
         status = request.data.get('status')
         if status == 'finished':
             request.data['sendtime'] = timezone.now()
+            statusChangedChuku(self.get_object(), warehouse, request.data.get('num'), True)
         else:
             request.data['sendtime'] = None
+            statusChangedChuku(self.get_object(), warehouse, request.data.get('num'))
+
         return super(AdminChukuViewSet, self).update(request, args, kwargs)

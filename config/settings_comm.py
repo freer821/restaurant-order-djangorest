@@ -162,7 +162,8 @@ LOGGING = {
             'filename': os.path.join(LOGGING_ROOT, "info.log"),
             'maxBytes': 1024*1024*5, # 5 MB
             'backupCount': 5,
-            'formatter': 'simple'
+            'formatter': 'simple',
+            'encoding': 'utf-8'
         },
         'fileError': {
             'level': 'ERROR',
@@ -170,7 +171,8 @@ LOGGING = {
             'filename': os.path.join(LOGGING_ROOT, "error.log"),
             'maxBytes': 1024*1024*5, # 5 MB
             'backupCount': 5,
-            'formatter': 'verbose'
+            'formatter': 'verbose',
+            'encoding': 'utf-8'
         },
     },
     'loggers': {
