@@ -18,23 +18,6 @@ class WHSRequestResponseMiddleware(MiddlewareMixin):
         super(WHSRequestResponseMiddleware, self).__init__(*args, **kwargs)
 
     def process_template_response(self, request, response):
-        try:
-            log_data = {
-                'user': request.user,
-
-                'remote_address': request.META['REMOTE_ADDR'],
-                'server_hostname': socket.gethostname(),
-
-                'request_method': request.method,
-                'request_path': request.get_full_path(),
-                'request_body': request.body,
-
-                'response_status': response.status_code,
-            }
-            logger.info(log_data)
-        except Exception as e:
-            logger.error(e)
-
         if not response.is_rendered and isinstance(response, Response):
             if isinstance(response.data, dict):
 

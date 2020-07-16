@@ -76,7 +76,7 @@ def resetpassword(request):
 def activateuser(request):
     activate_code = request.data.get('activecode', '')
     if len(activate_code) > 0:
-        activate_user_handle(activate_code)
+        activate_user_handle(activate_code.strip())
         return Response(getStandardResponse(200, 'user activated successfully'))
 
     return Response(getStandardResponse(500, 'user activated failed!'))

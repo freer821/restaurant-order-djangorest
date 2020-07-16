@@ -35,10 +35,10 @@ export function resetpassword(data) {
   })
 }
 
-export function activateUser(params) {
+export function activateUser(data) {
   return request({
     url: '/api/activateuser',
-    method: 'get',
-    params
+    method: 'post',
+    data
   })
 }
