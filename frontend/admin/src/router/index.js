@@ -114,52 +114,33 @@ export const adminRouterMap = [
     ]
   },
   {
-    path: '/admin/forecast',
+    path: '/admin/good',
     component: Layout,
-    redirect: '/admin/forecast/list',
+    redirect: '/admin/good/list',
     alwaysShow: true,
-    name: 'forecastAdminManage',
+    name: 'goodAdminManage',
     meta: {
-      title: '预报管理',
+      title: '商品管理',
       icon: 'guide'
     },
     children: [
       {
         path: 'list',
-        component: () => import('@/views/forecast/admin_list'),
-        name: 'forecastList',
+        component: () => import('@/views/good/list'),
+        name: 'goodList',
         meta: {
-          title: '预报列表',
+          title: '商品列表',
           noCache: true
         }
       },
       {
-        path: 'handle',
-        component: () => import('@/views/forecast/admin_handle'),
-        name: 'forecastAdminHandle',
+        path: 'single',
+        component: () => import('@/views/good/single'),
+        name: 'goodAdminCreate',
         meta: {
-          title: '入库扫描',
+          title: '新建商品',
           noCache: true
         }
-      },
-      {
-        path: 'create',
-        component: () => import('@/views/forecast/admin_create'),
-        name: 'forecastAdminCreate',
-        meta: {
-          title: '未预报入库',
-          noCache: true
-        }
-      },
-      {
-        path: 'edit',
-        component: () => import('@/views/forecast/admin_update'),
-        name: 'forecastAdminUpdate',
-        meta: {
-          title: '预报更新',
-          noCache: true
-        },
-        hidden: true
       }
     ]
   },
