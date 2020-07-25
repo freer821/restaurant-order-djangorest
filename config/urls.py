@@ -14,30 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from django.urls import path, include
+from django.urls import include
 from user.urls import urlpatterns as api_user_urls
-from ruku.urls import urlpatterns as api_ruku_urls
-from warehouse.urls import urlpatterns as api_warehouse_urls
-from chuku.urls import urlpatterns as api_chuku_urls
-from rest_framework import permissions
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
+from goods.urls import urlpatterns as api_goods_urls
 from django.views.generic.base import TemplateView
-
-schema_view = get_schema_view(
-   openapi.Info(
-      title="WHS API",
-      default_version='v1',
-      description="Test description",
-      terms_of_service="https://www.google.com/policies/terms/",
-      contact=openapi.Contact(email="contact@snippets.local"),
-      license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
-)
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
-    url(r'^api/', include(api_user_urls + api_ruku_urls + api_warehouse_urls + api_chuku_urls))
+    url(r'^api/', include(api_user_urls + api_goods_urls))
 ]

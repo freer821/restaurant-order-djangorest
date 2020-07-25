@@ -5,11 +5,10 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
-PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(PROJECT_DIR, 'whsys.db'),
+        'NAME': os.path.join(BASE_DIR, 'restaurant.db'),
     }
 }
 

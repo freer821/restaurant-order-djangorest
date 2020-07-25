@@ -6,7 +6,7 @@ from django.core import mail
 from config.settings import EMAIL_HOST_USER
 
 import logging
-logger = logging.getLogger('whs')
+logger = logging.getLogger('restaurant')
 
 def sendEmail(subject, html_content, to_email):
     with mail.get_connection() as connection:

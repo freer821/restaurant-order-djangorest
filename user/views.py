@@ -10,12 +10,9 @@ from rest_framework.parsers import JSONParser
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
-from chuku.models import Chuku
 from common.utils import getRandomNo
 from config.middleware import getStandardResponse
 from config.permissions import IsOwner
-from ruku.models import Forecast
-from warehouse.models import Warehouse
 from .serializers import *
 from .services import sendNewPassw, activate_user_handle
 
@@ -86,39 +83,7 @@ def activateuser(request):
 @permission_classes([IsAuthenticated])
 def dashboard(request):
     data = {}
-    if request.user.is_superuser:
-        user = request.GET.get('user','')
-        if user:
-            data['forecast_num'] = Forecast.objects.filter(owner__id=user).aggregate(Sum('expected_num')).get(
-                'expected_num__sum', '0')
-            data['ruku_num'] = Forecast.objects.filter(owner__id=user).aggregate(Sum('real_num')).get(
-                'real_num__sum', '0')
-            data['product_good_num'] = Warehouse.objects.filter(owner__id=user).aggregate(Sum('normal_num')).get(
-                'normal_num__sum', '0')
-            data['product_ungood_num'] = Warehouse.objects.filter(owner__id=user).aggregate(
-                product_ungood_num=Sum(F('error0_num') + F('error1_num'))).get('product_ungood_num', '0')
-            data['chuku_forecast_num'] = Chuku.objects.filter(owner__id=user, sendtime__isnull=True).aggregate(
-                Sum('num')).get('num__sum', '0')
-            data['chuku_num'] = Chuku.objects.filter(owner__id=user, sendtime__isnull=False).aggregate(
-                Sum('num')).get('num__sum', '0')
-        else:
-            data['forecast_num'] = Forecast.objects.all().aggregate(Sum('expected_num')).get('expected_num__sum', '0')
-            data['ruku_num'] = Forecast.objects.all().aggregate(Sum('real_num')).get('real_num__sum', '0')
-            data['product_good_num'] = Warehouse.objects.all().aggregate(Sum('normal_num')).get('normal_num__sum', '0')
-            data['product_ungood_num'] = Warehouse.objects.all().aggregate(
-                product_ungood_num=Sum(F('error0_num') + F('error1_num'))).get('product_ungood_num', '0')
-            data['chuku_forecast_num'] = Chuku.objects.filter(sendtime__isnull=True).aggregate(Sum('num')).get(
-                'num__sum', '0')
-            data['chuku_num'] = Chuku.objects.filter(sendtime__isnull=False).aggregate(Sum('num')).get('num__sum', '0')
-
-    else:
-        data['forecast_num'] = Forecast.objects.filter(owner=request.user).aggregate(Sum('expected_num')).get('expected_num__sum', '0')
-        data['ruku_num'] = Forecast.objects.filter(owner=request.user).aggregate(Sum('real_num')).get('real_num__sum', '0')
-        data['product_good_num'] = Warehouse.objects.filter(owner=request.user).aggregate(Sum('normal_num')).get('normal_num__sum', '0')
-        data['product_ungood_num'] = Warehouse.objects.filter(owner=request.user).aggregate(product_ungood_num= Sum(F('error0_num')+F('error1_num'))).get('product_ungood_num', '0')
-        data['chuku_forecast_num'] = Chuku.objects.filter(owner=request.user, sendtime__isnull=True).aggregate(Sum('num')).get('num__sum', '0')
-        data['chuku_num'] = Chuku.objects.filter(owner=request.user, sendtime__isnull=False).aggregate(Sum('num')).get('num__sum', '0')
-
+    # todo
     return Response(getStandardResponse(200, '', data))
 
 
@@ -157,20 +122,6 @@ class ChangePasswordView(generics.UpdateAPIView):
         return Response(getStandardResponse(500, serializer.errors))
 
 
-class FilemanagementViewSet(viewsets.ModelViewSet):
-    queryset = FileManagement.objects.all()
-    serializer_class = FileManagementSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated, IsOwner)
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filterset_fields = ['name']
-
-    def get_queryset(self):
-        return self.queryset.filter(owner=self.request.user).order_by('-updatedtime')
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user, file=self.request.FILES.get('file'))
-
 # ----------- Admin ---------------------
 class UserAdminViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -180,15 +131,3 @@ class UserAdminViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.queryset.filter(is_superuser=False)
-
-
-class AdminFilemanagementViewSet(viewsets.ModelViewSet):
-    queryset = FileManagement.objects.all()
-    serializer_class = AdminFileManagementSerializer
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAdminUser,)
-    filter_backends = [django_filters.rest_framework.DjangoFilterBackend]
-    filterset_fields = ['name', 'owner']
-
-    def pre_save(self, obj):
-        obj.file = self.request.FILES.get('file')

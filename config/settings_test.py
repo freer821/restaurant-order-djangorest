@@ -8,7 +8,7 @@ ALLOWED_HOSTS = ['127.0.0.1', '192.168.56.102']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'whs_db',
+        'NAME': 'restaurant_db',
         'USER': 'root',
         'PASSWORD': 'qwer1234@',
         'HOST': 'ub-mariadb',

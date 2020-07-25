@@ -38,9 +38,8 @@ INSTALLED_APPS = [
     'django_filters',
 
     'user',
-    'ruku',
-    'warehouse',
-    'chuku'
+    'goods',
+    'order'
 ]
 
 REST_FRAMEWORK = {
@@ -64,7 +63,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'config.middleware.WHSRequestResponseMiddleware'
+    'config.middleware.CustomRequestResponseMiddleware'
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -176,7 +175,7 @@ LOGGING = {
         },
     },
     'loggers': {
-        'whs': {
+        'restaurant': {
             'handlers': ['fileError', 'fileInfo'],
             'level': 'INFO',
             'propagate': True,

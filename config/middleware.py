@@ -13,9 +13,9 @@ def getStandardResponse(status, msg='', data=''):
         'data': data
     }
 
-class WHSRequestResponseMiddleware(MiddlewareMixin):
+class CustomRequestResponseMiddleware(MiddlewareMixin):
     def __init__(self, *args, **kwargs):
-        super(WHSRequestResponseMiddleware, self).__init__(*args, **kwargs)
+        super(CustomRequestResponseMiddleware, self).__init__(*args, **kwargs)
 
     def process_template_response(self, request, response):
         if not response.is_rendered and isinstance(response, Response):

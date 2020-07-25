@@ -6,8 +6,6 @@ from .views import *
 
 router = routers.SimpleRouter()
 router.register(r'admin/users', UserAdminViewSet)
-router.register(r'admin/store', AdminFilemanagementViewSet)
-router.register(r'store', FilemanagementViewSet)
 
 urlpatterns = [
     path('regist', register),
