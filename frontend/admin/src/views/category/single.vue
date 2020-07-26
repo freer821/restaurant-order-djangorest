@@ -20,7 +20,7 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="是否启用">
-          <el-radio-group v-model="category.content.isInUse">
+          <el-radio-group v-model="category.isactived">
             <el-radio :label="true">是</el-radio>
             <el-radio :label="false">否</el-radio>
           </el-radio-group>
@@ -46,8 +46,8 @@ export default {
       title: '',
       category: {
         name: '',
+        isactived: true,
         content: {
-          isInUse: false,
           img: ''
         }
       },

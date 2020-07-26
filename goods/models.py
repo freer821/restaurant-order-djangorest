@@ -8,6 +8,7 @@ def upload_to(instance, filename):
 class Category(models.Model):
     name = models.CharField(max_length=200, default='')
     content= models.TextField(default='') # json img
+    isactived = models.BooleanField(default=True)
     createdtime = models.DateTimeField(auto_now_add=True)
     updatedtime = models.DateTimeField(auto_now=True)
 
@@ -18,6 +19,7 @@ class Good(models.Model):
     price = models.FloatField(default=0)
     content= models.TextField(default='') # json img
     day_limit = models.PositiveIntegerField(default=0) # 日销售上线
+    isactived = models.BooleanField(default=True)
     createdtime = models.DateTimeField(auto_now_add=True)
     updatedtime = models.DateTimeField(auto_now=True)
 

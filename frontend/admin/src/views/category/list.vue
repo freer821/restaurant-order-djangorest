@@ -21,7 +21,7 @@
 
       <el-table-column align="center" label="状态">
         <template slot-scope="scope">
-          <span>{{ scope.row.content.isInUse ? '已启用': '未启用' }}</span>
+          <span>{{ scope.row.isactived ? '已启用': '未启用' }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="图片">

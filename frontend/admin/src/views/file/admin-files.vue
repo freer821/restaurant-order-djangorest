@@ -44,8 +44,9 @@
 </template>
 
 <script>
-import { listStorage, createStorage, delStorage } from '@/api/storage'
-import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import { listAdminStorage, createAdminStorage, delAdminStorage } from '@/api/storage'
+import Pagination from '@/components/Pagination'
+import { mapGetters } from 'vuex' // Secondary package based on el-pagination
 
 export default {
   name: 'Storage',
@@ -69,7 +70,8 @@ export default {
       rules: {
         name: [{ required: true, message: '对象名称不能为空', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      users: []
     }
   },
   created() {
@@ -78,7 +80,9 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      listStorage(this.listQuery).then(response => {
+      this.listQuery.owner = this.current_user === 'all' ? undefined : this.current_user
+
+      listAdminStorage(this.listQuery).then(response => {
         this.list = response.data.results
         this.total = response.data.count
         this.listLoading = false
@@ -104,27 +108,22 @@ export default {
     handleUpload(item) {
       this.$refs.upload.clearFiles()
 
-      if (item.file.size > 3145728) {
-        this.$notify.error('文件大于3m，请修改文件大小后再上传！')
-        this.createDialogVisible = false
-      } else {
-        const formData = new FormData()
-        formData.append('size', item.file.size)
-        formData.append('name', item.file.name)
-        formData.append('file', item.file)
+      const formData = new FormData()
+      formData.append('size', item.file.size)
+      formData.append('name', item.file.name)
+      formData.append('file', item.file)
 
-        createStorage(formData).then(response => {
-          this.list.unshift(response.data)
-          this.createDialogVisible = false
-          this.$notify.success({
-            title: '成功',
-            message: '上传成功'
-          })
-        }).catch(err => {
-          console.log(err)
-          this.$message.error('上传失败，请重新上传')
+      createAdminStorage(formData).then(response => {
+        this.list.unshift(response.data)
+        this.createDialogVisible = false
+        this.$notify.success({
+          title: '成功',
+          message: '上传成功'
         })
-      }
+      }).catch(err => {
+        console.log(err)
+        this.$message.error('上传失败，请重新上传')
+      })
     },
     handleUpdate(row) {
       this.dataForm = Object.assign({}, row)
@@ -134,7 +133,7 @@ export default {
       })
     },
     handleDelete(row) {
-      delStorage(row.id).then(response => {
+      delAdminStorage(row.id).then(response => {
         this.$notify.success({
           title: '成功',
           message: '删除成功'

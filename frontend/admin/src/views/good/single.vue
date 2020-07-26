@@ -22,6 +22,13 @@
         <el-form-item label="产品名称" prop="name">
           <el-input v-model="good.name" />
         </el-form-item>
+        <el-form-item label="价格" prop="price">
+          <el-input v-model="good.price" />
+        </el-form-item>
+        <el-form-item label="每天数量" prop="day_limit">
+          <el-input v-model="good.day_limit" />
+        </el-form-item>
+
         <el-form-item label="商品图片">
           <el-upload
             :http-request="uploadImg"
@@ -35,7 +42,7 @@
           </el-upload>
         </el-form-item>
         <el-form-item label="是否启用">
-          <el-radio-group v-model="good.content.isInUse">
+          <el-radio-group v-model="good.isactived">
             <el-radio :label="true">是</el-radio>
             <el-radio :label="false">否</el-radio>
           </el-radio-group>
@@ -63,8 +70,10 @@ export default {
       good: {
         name: '',
         category: '',
+        price: '',
+        day_limit: '',
+        isactived: true,
         content: {
-          isInUse: false,
           img: ''
         }
       },
@@ -72,7 +81,10 @@ export default {
       origin_good: {},
       rules: {
         category: [{ required: true, message: '产品分类不能为空', trigger: 'blur' }],
-        name: [{ required: true, message: '产品名称不能为空', trigger: 'blur' }]
+        name: [{ required: true, message: '产品名称不能为空', trigger: 'blur' }],
+        price: [{ required: true, message: '产品价格不能为空', trigger: 'blur' }],
+        day_limit: [{ required: true, message: '产品名称不能为空', trigger: 'blur' }]
+
       }
     }
   },

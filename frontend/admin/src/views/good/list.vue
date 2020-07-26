@@ -17,11 +17,14 @@
       highlight-current-row
     >
 
-      <el-table-column align="center" min-width="100" label="商品名称" prop="name" />
+      <el-table-column align="center" label="商品名称" prop="name" />
+      <el-table-column align="center" label="每日数量" prop="day_limit" />
+      <el-table-column align="center" label="价格 (€)" prop="price" />
+      <el-table-column align="center" label="分类" prop="category" />
 
       <el-table-column align="center" label="状态">
         <template slot-scope="scope">
-          <span>{{ scope.row.content.isInUse ? '已启用': '未启用' }}</span>
+          <span>{{ scope.row.isactived ? '已启用': '未启用' }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="图片">
@@ -66,7 +69,7 @@
 </style>
 
 <script>
-import { listAdmincategory, delCategoryAdmin } from '@/api/category'
+import { listGoodsAdmin, delGoodAdmin } from '@/api/good'
 import BackToTop from '@/components/BackToTop'
 import Pagination from '@/components/Pagination'
 export default {
@@ -92,7 +95,7 @@ export default {
     getList() {
       this.listLoading = true
       this.listQuery.offset = (this.listQuery.page - 1) * this.listQuery.limit
-      listAdmincategory(this.listQuery).then(response => {
+      listGoodsAdmin(this.listQuery).then(response => {
         this.list = response.data.results
         this.total = response.data.count
         console.log(this.list)
@@ -108,7 +111,7 @@ export default {
       this.getList()
     },
     handleDetail(row) {
-      this.$router.push({ name: 'categoryEdit', query: { id: row.id }})
+      this.$router.push({ name: 'goodAdminCreate', query: { id: row.id }})
     },
     handleDel(row) {
       this.$confirm('此操作将永久删除该选项以及相关商品, 是否继续?', '提示', {
@@ -116,7 +119,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        delCategoryAdmin(row.id).then(response => {
+        delGoodAdmin(row.id).then(response => {
           this.$message.success('删除成功！')
         }).catch(err => {
           this.$message.error('删除失败！' + JSON.stringify(err.msg))
