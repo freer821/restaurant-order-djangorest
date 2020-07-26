@@ -56,3 +56,19 @@ class FileManagementSerializer(serializers.ModelSerializer):
         model = FileManagement
         fields = '__all__'
 
+
+
+class UserCategorySerializer(serializers.ModelSerializer):
+    content = serializers.JSONField()
+
+    class Meta:
+        model = Category
+        fields = ['name', 'content']
+
+    def to_representation(self, instance: Category):
+        instance.content = json.loads(instance.content)
+        return super(UserCategorySerializer, self).to_representation(instance)
+
+    def to_internal_value(self, data):
+        data['content'] = json.dumps(data['content'])
+        return super(UserCategorySerializer, self).to_internal_value(data)
