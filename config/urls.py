@@ -17,9 +17,11 @@ from django.conf.urls import url
 from django.urls import include
 from user.urls import urlpatterns as api_user_urls
 from goods.urls import urlpatterns as api_goods_urls
+from order.urls import urlpatterns as api_orders_urls
+
 from django.views.generic.base import TemplateView
 
 urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='home'),
-    url(r'^api/', include(api_user_urls + api_goods_urls))
+    url(r'^api/', include(api_user_urls + api_goods_urls + api_orders_urls))
 ]

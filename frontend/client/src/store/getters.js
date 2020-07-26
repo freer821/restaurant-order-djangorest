@@ -5,6 +5,7 @@ const getters = {
 	name: state => state.user.username,
 	cart_goods: state => state.cart.cart_goods,
 	num_cart_goods: state => state.cart.num_cart_goods,
-	fee_cart_goods: state => state.cart.fee_cart_goods
+	fee_cart_goods: state => state.cart.fee_cart_goods,
+	order: state => state.order.order
 }
 export default getters
