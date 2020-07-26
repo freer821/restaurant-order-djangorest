@@ -47,6 +47,9 @@
             <el-radio :label="false">否</el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item label="配料">
+          <json-editor ref="jsonEditor" v-model="good.content.extra" />
+        </el-form-item>
       </el-form>
     </el-card>
     <div class="op-container">
@@ -57,13 +60,15 @@
 </template>
 
 <script>
+import JsonEditor from './components/jsoneditor'
+
 import { createAdminStorage } from '@/api/storage'
 
 import { getGoodAdmin, updateGoodAdmin, createGoodAdmin } from '@/api/good'
 import { listAdmincategory } from '@/api/category'
 export default {
   name: 'GoodCreateOrEdit',
-
+  components: { JsonEditor },
   data() {
     return {
       title: '',
@@ -74,7 +79,8 @@ export default {
         day_limit: '',
         isactived: true,
         content: {
-          img: ''
+          img: '',
+          extra: {}
         }
       },
       categories: [],
@@ -92,6 +98,7 @@ export default {
     if (this.$route.query.id) {
       getGoodAdmin(this.$route.query.id).then(respone => {
         this.good = respone.data
+        this.good.content.extra = JSON.parse(this.good.content.extra)
         this.title = this.good.name
         this.origin_good = Object.assign({}, this.good)
       }).catch(err => {
